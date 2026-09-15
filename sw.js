@@ -10,7 +10,7 @@
 // layer entirely, so "network-first" actually reaches the network. CACHE bumps
 // to v2 so activate's own cleanup sweeps the v1 shelf on the next visit.
 const CACHE = "monomyth-focus-v2";
-const NETWORK_FIRST_FILES = ["seed.enc"];
+const NETWORK_FIRST_FILES = [];
 
 self.addEventListener("install", () => { self.skipWaiting(); });
 self.addEventListener("activate", (e) => {
