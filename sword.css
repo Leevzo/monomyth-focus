@@ -1,0 +1,77 @@
+/* THE SWORD — paper and ink, Mac System 1.0 in spirit. No boxes on a narrative.
+   Faces (his word, 2026-09-22): the Name = Monomyth's pixel face (drawn, not a font) ·
+   titles = Dogica Pixel Bold · every other word = W95FA. Pixel faces stay crisp at
+   whole multiples of 8px, so the sizes here are 8 · 16 · 24. */
+:root{ --paper:#ffffff; --ink:#111111; --faint:#8a8a8a; --rule:#dcdcdc; --safeT:env(safe-area-inset-top,0px); --safeB:env(safe-area-inset-bottom,0px); color-scheme:light }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --paper:#0a0a0c; --ink:#ffffff; --faint:#7d7d84; --rule:#26262c; color-scheme:dark } }
+:root[data-theme="dark"]{ --paper:#0a0a0c; --ink:#ffffff; --faint:#7d7d84; --rule:#26262c; color-scheme:dark }
+*{ box-sizing:border-box }
+html,body{ height:100% }
+body{ margin:0; background:var(--paper); color:var(--ink); font-family:'W95FA','Chicago',monospace; font-size:16px; line-height:1.5;
+  -webkit-text-size-adjust:100%; -webkit-font-smoothing:none; padding:0 16px; padding-top:calc(var(--safeT) + 14px); padding-bottom:calc(var(--safeB) + 96px) }
+.sheet{ max-width:600px; margin:0 auto }
+
+/* the shelf — the list of pages, one line */
+.shelf{ display:flex; flex-wrap:wrap; gap:6px 14px; margin:0 0 14px; font-family:'Dogica',monospace; font-size:8px; line-height:2; letter-spacing:.04em; text-transform:uppercase }
+.shelf a{ color:var(--faint); text-decoration:none; padding:4px 0 }
+.shelf a[aria-current="page"]{ color:var(--ink) }
+
+/* the one thing */
+.one{ display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 10px; margin:0 0 18px }
+.one .lab{ font-size:16px; color:var(--faint) }
+.one .word{ font-family:'Dogica',monospace; font-size:16px; line-height:1.4 }
+
+/* the telling: larger doors, larger; smaller as they collapse down */
+.run{ margin:0 }
+.d0{ font-size:16px; line-height:1.55 } .d1{ font-size:16px; line-height:1.5 } .d2,.d3,.d4{ font-size:16px; line-height:1.5 }
+.block{ display:block; margin:6px 0 10px 14px }
+.glue{ white-space:nowrap }
+.name{ display:inline-block; vertical-align:baseline; border:0; padding:0; margin:0; background:none; color:inherit; cursor:pointer; font:inherit; -webkit-tap-highlight-color:transparent }
+.name .word{ font-family:'Dogica',monospace; font-weight:700; letter-spacing:.02em; display:inline-block; padding:3px 0 }
+.name .word.d0{ font-size:24px; line-height:1.1 }
+.name .word.d1{ font-size:16px; line-height:1.3 }
+.name .word.d2,.name .word.d3{ font-size:16px; line-height:1.3 }
+.name.dim .word{ color:var(--faint) }
+.name.hero{ line-height:0; vertical-align:-0.2em }
+.name .heroword{ display:inline-block; vertical-align:baseline }
+.name .heroword svg{ display:block }
+.name:focus-visible{ outline:2px solid currentColor; outline-offset:3px }
+.unlock{ margin-top:10px }
+
+/* deeds: the one list the story allows */
+.deeds{ display:flex; flex-direction:column; gap:2px; margin:6px 0 4px }
+.deed{ display:flex; align-items:baseline; gap:10px; border:0; background:none; padding:6px 0; margin:0; color:var(--ink); cursor:pointer; text-align:left; font:inherit; line-height:1.4; -webkit-tap-highlight-color:transparent }
+.deed .box{ font-family:'Dogica',monospace; font-size:8px; line-height:2; flex:none }
+.deed.done{ opacity:.42 } .deed.done .deedtext{ text-decoration:line-through }
+.deed:focus-visible{ outline:2px solid currentColor; outline-offset:2px }
+
+/* the feet: no chrome, plain words */
+.feet{ margin-top:30px; padding-top:12px; padding-right:76px; border-top:1px solid var(--rule); display:flex; flex-wrap:wrap; gap:8px 18px; align-items:baseline; color:var(--faint) }
+.feet button,.feet label{ background:none; border:0; padding:6px 0; margin:0; font:inherit; color:var(--faint); cursor:pointer; -webkit-tap-highlight-color:transparent }
+.feet button:hover,.feet label:hover{ color:var(--ink) }
+.feet input[type=file]{ display:none }
+.tally{ margin-left:auto }
+#feetnote{ width:100%; font-size:16px }
+
+/* ORV in the corner */
+#orvbtn{ position:fixed; right:16px; bottom:calc(var(--safeB) + 16px); width:56px; height:56px; border:2px solid var(--ink); border-radius:0; background:var(--paper); color:var(--ink);
+  display:flex; align-items:center; justify-content:center; cursor:pointer; -webkit-tap-highlight-color:transparent; z-index:5 }
+#orvbtn svg{ display:block }
+#orvbtn:active{ background:var(--ink); color:var(--paper) }
+
+/* the talk — a sheet over the page, one per main quest */
+#chat{ position:fixed; inset:0; background:var(--paper); color:var(--ink); z-index:10; display:flex; flex-direction:column; padding:calc(var(--safeT) + 10px) 16px calc(var(--safeB) + 10px) }
+#chat[hidden]{ display:none }
+.chathead{ display:flex; align-items:baseline; gap:10px; padding-bottom:8px; border-bottom:1px solid var(--rule) }
+.chathead .who{ font-family:'Dogica',monospace; font-size:16px }
+#orvword{ font-family:'Dogica',monospace; font-size:8px; line-height:2; color:var(--faint); text-transform:uppercase; letter-spacing:.06em; flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap }
+.chathead button{ background:none; border:0; font:inherit; color:var(--faint); padding:6px 0; cursor:pointer }
+#chatlines{ flex:1; overflow-y:auto; -webkit-overflow-scrolling:touch; padding:10px 0; display:flex; flex-direction:column; gap:8px }
+.chatline{ margin:0 } .chatline b{ font-family:'Dogica',monospace; font-size:8px; line-height:2; letter-spacing:.06em; margin-right:6px } .chatline.dim{ color:var(--faint) }
+.chatrow{ display:flex; gap:8px; align-items:flex-end; padding-top:8px; border-top:1px solid var(--rule) }
+#chatin,#keyin{ flex:1; min-width:0; font:inherit; color:var(--ink); background:var(--paper); border:0; border-bottom:2px solid var(--ink); padding:8px 0; outline:none; resize:none }
+.chatrow button{ background:none; border:2px solid var(--ink); color:var(--ink); font:inherit; padding:8px 12px; cursor:pointer; -webkit-tap-highlight-color:transparent }
+.chatrow button.on{ background:var(--ink); color:var(--paper) }
+#keyrow{ display:flex; gap:8px; align-items:flex-end; padding-top:8px }
+#keyrow[hidden]{ display:none }
+#keyrow .hint{ width:100%; color:var(--faint); font-size:16px }
