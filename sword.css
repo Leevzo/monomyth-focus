@@ -75,3 +75,13 @@ body{ margin:0; background:var(--paper); color:var(--ink); font-family:'W95FA','
 #keyrow{ display:flex; gap:8px; align-items:flex-end; padding-top:8px }
 #keyrow[hidden]{ display:none }
 #keyrow .hint{ width:100%; color:var(--faint); font-size:16px }
+
+/* THE MARK — a sheet of codes to screenshot; white on white so a camera reads it */
+#mark{ position:fixed; inset:0; background:#fff; color:#111; z-index:11; display:flex; flex-direction:column; padding:calc(var(--safeT) + 10px) 16px calc(var(--safeB) + 10px); overflow-y:auto; -webkit-overflow-scrolling:touch }
+#mark[hidden]{ display:none }
+#mark .chathead{ border-color:#dcdcdc } #mark .chathead .who{ color:#111 } #mark #markhead{ color:#8a8a8a }
+#markbody{ display:flex; flex-direction:column; align-items:center; gap:10px; padding:12px 0 }
+.marklab{ margin:0; font-family:'Dogica',monospace; font-size:8px; line-height:2; letter-spacing:.06em; text-transform:uppercase; color:#8a8a8a; align-self:flex-start }
+.markqr svg{ display:block; width:min(100%, 343px); height:auto; image-rendering:pixelated }
+.markhow{ color:#8a8a8a; margin:0 0 6px }
+#mark .chatrow{ border-color:#dcdcdc } #mark .chatrow button{ color:#111; border-color:#111; background:#fff }
