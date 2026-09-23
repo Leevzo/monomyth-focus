@@ -22,13 +22,13 @@
     <a href="./wolf.html">Wolf</a>
     <a href="./ravens.html" aria-current="page">Ravens</a>
     <a href="./dragons.html">Dragons</a>
+    <a href="./glyph.html">Glyph</a>
     <a href="./crown/">Crown</a>
   </nav>
   <div class="one"><span class="lab">the one thing</span><span class="word" id="one"></span></div>
   <div id="flow"></div>
   <div class="feet">
-    <button type="button" id="markbtn">mark</button>
-    <button type="button" id="markall">mark all</button>
+    <button type="button" id="glyphbtn">glyph</button>
     <button type="button" id="shutAll">close everything</button>
     <button type="button" id="backup">backup .myth</button>
     <label for="restorefile">restore .myth</label><input type="file" id="restorefile" accept=".myth,.zip,application/zip">
@@ -44,14 +44,14 @@
   <div class="chatrow"><textarea id="chatin" rows="2" placeholder="say it"></textarea><button type="button" id="actbtn" title="Orv may strike and add deeds">act</button><button type="button" id="chatsend">send</button></div>
 </div>
 <div id="mark" hidden>
-  <div class="chathead"><span class="who">MARK</span><span id="markhead"></span><button type="button" id="markclose">close</button></div>
+  <div class="chathead"><span class="who">GLYPH</span><span id="markhead"></span><button type="button" id="markclose">close</button></div>
   <div id="markbody"></div>
-  <p class="markhow">Screenshot this and drop it into the kingdom. Then:</p>
-  <div class="chatrow"><button type="button" id="markdone">marked — the kingdom has it</button></div>
+  <p class="markhow">The kingdom rides in Orv. Save him to Photos; the Glyph page reads him back.</p>
+  <div class="chatrow"><button type="button" id="glyphsave">save the glyph</button></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="./vendor/omggif.js"></script>
 <script src="./quests/ravens.js"></script>
 <script src="./sword.js"></script>
 </body>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: blob:; connect-src 'self' https:; object-src 'none'; base-uri 'self'">
+<meta name="theme-color" content="#ffffff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icon-192.png">
+<title>Mythglyph</title>
+<link rel="stylesheet" href="./fonts.css">
+<link rel="stylesheet" href="./sword.css">
+</head>
+<body data-page="glyph">
+<nav id="glyphtabs" aria-label="the glyphs read on this phone"></nav>
+<div class="sheet">
+  <nav class="shelf" aria-label="the pages">
+    <a href="./">Day One</a>
+    <a href="./wild-beasts.html">Wild Beasts</a>
+    <a href="./empty-square.html">The Empty Square</a>
+    <a href="./wolf.html">Wolf</a>
+    <a href="./ravens.html">Ravens</a>
+    <a href="./dragons.html">Dragons</a>
+    <a href="./glyph.html" aria-current="page">Glyph</a>
+    <a href="./crown/">Crown</a>
+  </nav>
+  <h1 class="upload">upload .mythglyph</h1>
+  <div class="pick">
+    <label for="glyphphotos">choose from photos</label><input type="file" id="glyphphotos" accept="image/gif,image/*">
+    <label for="glyphcamera">camera</label><input type="file" id="glyphcamera" accept="image/*" capture="environment">
+  </div>
+  <p id="glyphnote"></p>
+  <p id="glyphdone" hidden>the kingdom is now <span id="glyphat"></span><br><a href="./">Day One</a></p>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
+<script src="./vendor/omggif.js"></script>
+
+<script src="./sword.js"></script>
+</body>
+</html>

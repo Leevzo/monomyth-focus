@@ -85,3 +85,23 @@ body{ margin:0; background:var(--paper); color:var(--ink); font-family:'W95FA','
 .markqr svg{ display:block; width:min(100%, 343px); height:auto; image-rendering:pixelated }
 .markhow{ color:#8a8a8a; margin:0 0 6px }
 #mark .chatrow{ border-color:#dcdcdc } #mark .chatrow button{ color:#111; border-color:#111; background:#fff }
+
+/* THE MYTHGLYPH — the kingdom as Orv, breathing, on the same white sheet the mark had */
+.glyphimg{ display:block; width:360px; max-width:100%; height:auto; image-rendering:pixelated; image-rendering:crisp-edges }
+
+/* the Glyph page — one big line, two plain buttons, the glyphs read before on tabs down the left edge */
+body.hastabs{ padding-left:44px }
+.upload{ font-family:'Dogica',monospace; font-weight:700; font-size:24px; line-height:1.3; letter-spacing:.02em; margin:28px 0 22px; text-transform:none }
+.pick{ display:flex; flex-wrap:wrap; gap:12px }
+.pick label{ border:2px solid var(--ink); color:var(--ink); background:var(--paper); padding:10px 14px; cursor:pointer; -webkit-tap-highlight-color:transparent }
+.pick label:active{ background:var(--ink); color:var(--paper) }
+.pick input[type=file]{ display:none }
+#glyphnote{ color:var(--faint); margin:18px 0 0; min-height:1.5em }
+#glyphdone{ margin:10px 0 0 } #glyphdone[hidden]{ display:none }
+#glyphat{ font-family:'Dogica',monospace; font-size:16px; line-height:1.6; white-space:nowrap }
+#glyphdone a{ color:var(--ink) }
+#glyphtabs{ position:fixed; left:0; top:calc(var(--safeT) + 14px); bottom:calc(var(--safeB) + 14px); width:30px; display:flex; flex-direction:column; gap:6px; overflow-y:auto; -webkit-overflow-scrolling:touch; z-index:4 }
+#glyphtabs:empty{ display:none }
+.gtab{ writing-mode:vertical-rl; flex:none; border:2px solid var(--ink); border-left:0; background:var(--paper); color:var(--ink); padding:10px 5px; margin:0;
+  font-family:'Dogica',monospace; font-size:8px; line-height:1; letter-spacing:.04em; cursor:pointer; -webkit-tap-highlight-color:transparent }
+.gtab.on{ background:var(--ink); color:var(--paper) }
