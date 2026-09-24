@@ -486,53 +486,48 @@ const CROWN = (() => {
     const deeds = k.spires.map((s) => s.deeds.map((d) => d.w.toUpperCase()).filter(Boolean));
     const spireBox = [[8, 54, 30, 60], [88, 146, 0, 60], [168, 220, 30, 60]];
     deeds.forEach((ws, i) => { if (ws.length) { const [a, b, c, d] = spireBox[i]; stack(ws, X(a), X(b), Y(c), Y(d)); } });
-    // Orv, in the heart of the band
+    // Orv, the anchor: the lower-right corner of the words, standing on the foot's line
     const ow = ORV[0].rows[0].length * OS, oh = ORV[0].rows.length * OS;
-    const ox = Math.round(X(114) - ow / 2), oy = Math.round((Y(63) + Y(144)) / 2 - oh / 2);
-    // the one thing: band rows (split around Orv), then the foot
+    const fy0 = Y(154), fy1 = Y(176), ox = X(220) - ow, oy = fy1 - oh;
+    // the one thing: band rows, then the foot; any row Orv reaches stops short of him
     const words = k.one.replace(/[.]+$/, '').toUpperCase().split(/\s+/).filter(Boolean);
-    const bx0 = X(8), bx1 = X(220), by0 = Y(63), by1 = Y(144), fy0 = Y(154), fy1 = Y(176);
-    // split the words across the slots so every line is stretched about the same: fat, never smeared
-    const units = (ws) => ws.reduce((n, w) => n + w.length * 7 - 1, 0) + (ws.length - 1) * 4;
-    let bestPlan = null;
-    for (let R = 2; R <= 8; R++) {
+    const bx0 = X(8), bx1 = X(220), by0 = Y(63), by1 = Y(144);
+    for (let R = 2; R <= 12; R++) {
       const h = (by1 - by0 + 2) / R, slots = [];
-      for (let r = 0; r < R; r++) { const y0 = by0 + r * h, y1 = y0 + h - 2;
-        if (y1 > oy - 2 && y0 < oy + oh + 2) slots.push([bx0, ox - 3, y0, y1], [ox + ow + 3, bx1, y0, y1]); else slots.push([bx0, bx1, y0, y1]); }
-      slots.push([X(0), X(220), fy0, fy1]);
-      const S = slots.length, W = words.length; if (W < S) continue;
-      // cost of putting words[i..j) in slot s: how far its letters sit from square-ish (width/height ≈ 0.9)
-      const cost = (s, i, j) => { const [a, b, c, d] = slots[s], u = units(words.slice(i, j)), cellW = (b - a) / u, cellH = (d - c) / 7, r = cellW / cellH;
-        return Math.log(r / 0.9) ** 2; };
-      const D = Array.from({ length: S + 1 }, () => Array(W + 1).fill(Infinity)), P = Array.from({ length: S + 1 }, () => Array(W + 1).fill(-1));
-      D[0][0] = 0;
-      for (let s = 1; s <= S; s++) for (let j = s; j <= W; j++) for (let i = s - 1; i < j; i++) { const c = D[s - 1][i] + cost(s - 1, i, j); if (c < D[s][j]) { D[s][j] = c; P[s][j] = i; } }
-      if (D[S][W] === Infinity) continue;
-      const cuts = []; for (let s = S, j = W; s > 0; j = P[s][j], s--) cuts.unshift([P[s][j], j]);
-      const score = D[S][W] / S; if (!bestPlan || score < bestPlan.score) bestPlan = { score, slots, cuts };
+      for (let r = 0; r < R; r++) { const y0 = by0 + r * h, y1 = y0 + h - 2; slots.push([bx0, y1 > oy - 2 ? ox - 4 : bx1, y0, y1]); }
+      slots.push([X(0), ox - 4, fy0, fy1]);
+      const cap = slots.map(([a, b, c, d]) => Math.max(1, Math.round((b - a) / ((d - c) * 6 / 7 * 1.15 + 1))));
+      const lines = []; let i = 0;
+      for (const c of cap) { const ln = []; let n = 0;
+        while (i < words.length && (n === 0 || n + 1 + words[i].length <= c)) { n += (n ? 1 : 0) + words[i].length; ln.push(words[i++]); }
+        lines.push(ln); }
+      if (i < words.length) continue;
+      slots.forEach((sl, j) => { if (lines[j].length) row(lines[j], ...sl); });
+      break;
     }
-    if (bestPlan) bestPlan.slots.forEach((sl, s) => row(words.slice(...bestPlan.cuts[s]), ...sl));
-    return { cells: [...m].sort((a, b) => a - b).map((v) => [v % 4096, Math.floor(v / 4096)]), ox, oy };
+    const bottom = fy1;
+    return { cells: [...m].sort((a, b) => a - b).map((v) => [v % 4096, Math.floor(v / 4096)]), ox, oy, bottom };
   }
   async function seal(k) {
-    const { cells, ox, oy } = layout7(k), P = N7 * S7;
+    const { cells, ox, oy, bottom } = layout7(k), P = N7 * S7, GH7 = bottom + 3 + 7 + M7, PH = GH7 * S7;
     const z = await deflate(new TextEncoder().encode(JSON.stringify(k)));
     const blob = Uint8Array.from([...be(z.length, 4), ...be(crc32(z), 4), ...z]);
     const cell = (ix, x, y, c) => { for (let dy = 0; dy < S7; dy++) ix.fill(c, (y * S7 + dy) * P + x * S7, (y * S7 + dy) * P + x * S7 + S7); };
-    const base = new Uint8Array(P * P);
+    const base = new Uint8Array(P * PH);
     const when = k.at.slice(11, 16) + ' · ' + k.at.slice(5, 7) + '.' + k.at.slice(8, 10) + '.' + k.at.slice(0, 4);
-    const line = k.king.toUpperCase() + ' · ' + when, x0 = N7 - M7 - wS(line, 1, false), y0 = N7 - M7 - 7;
+    const line = k.king.toUpperCase() + ' · ' + when, x0 = N7 - M7 - wS(line, 1, false), y0 = bottom + 3;
     [...line].forEach((ch, i) => cols(ch, false).forEach((col, cx) => { for (let cy = 0; cy < 7; cy++) if (col & (1 << cy)) cell(base, x0 + i * 6 + cx, y0 + cy, 1); }));
     const orvC = N7 / 2, orvY = oy + ORV[0].rows.length;
     const swirl7 = (x, y, f, cyc) => { const a = Math.atan2(y - orvY, x - orvC), r = Math.hypot(x - orvC, y - orvY);
-      return 0.5 + 0.32 * Math.sin(a * 3 + r * 0.07 - f * 2 * Math.PI / cyc) + 0.18 * (hash(x, y, f) - 0.5) * 2; };
+      const t = Math.sin(f * 2 * Math.PI / cyc);                        // sways one way, then back
+      return 0.5 + 0.5 * Math.sin(a * 2 + r * 0.06 + 2.2 * t) * Math.cos(r * 0.035 - 1.4 * t); };
     const frame = (f, dx, dy, ink) => { const ix = base.slice();
       cells.forEach(([x, y], c) => cell(ix, x + dx, y + dy, ink(c, x, y)));
       const o = ORV[f % 4]; o.rows.forEach((row, r) => [...row].forEach((ch, c) => { const j = orvIdx5[f % 4][ch];
         if (j !== undefined) for (let a = 0; a < OS; a++) for (let b = 0; b < OS; b++) cell(ix, ox + c * OS + a, oy + r * OS + b, j); }));
       return ix; };
     const frames = [frame(0, 0, 0, () => 1)];
-    const CYC = 24, chunks = []; let off = 0, i = 0;
+    const CYC = 12, chunks = []; let off = 0, i = 0;
     while (off < blob.length || i === 0) { const f = i + 1, [dx, dy] = DRIFT[f % DRIFT.length];
       const lit = cells.map(([x, y]) => swirl7(x, y, f, CYC) > 0.5), n = lit.filter(Boolean).length, per = Math.floor(n / 16) * 9 - 11;
       const ch = blob.slice(off, off + per); off += ch.length; chunks.push({ ch, lit, dx, dy }); if (++i > 4000) throw new Error('kingdom too large'); }
@@ -540,8 +535,8 @@ const CROWN = (() => {
       const hdr = [77, 67, 3, ...be(j, 2), ...be(chunks.length, 2), ...be(ch.length, 2), ...be(crc32(ch) & 0xffff, 2)];
       const d = toD23(Uint8Array.from([...hdr, ...ch])); let q = 0;
       frames.push(frame(j + 1, dx, dy, (c, x, y) => lit[c] ? 2 + (q < d.length ? d[q++] : Math.floor(hash(x, y, j) * 23)) : 1)); });
-    const delays = [1600, ...chunks.map(() => 110)];
-    return { png: await writePng(frames, P, P, delays, PAL5.slice(0, 256)), gif: writeGif(frames, P, P, delays, PAL5) };
+    const delays = [1600, ...chunks.map(() => 150)];
+    return { png: await writePng(frames, P, PH, delays, PAL5.slice(0, 256)), gif: writeGif(frames, P, PH, delays, PAL5) };
   }
 
   // ── open: GIF bytes -> kingdom ──
