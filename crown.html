@@ -491,11 +491,10 @@ const CROWN = (() => {
     const fy0 = Y(154), fy1 = Y(176), ox = X(220) - ow, oy = fy1 - oh;
     // the one thing: band rows, then the foot; any row Orv reaches stops short of him
     const words = k.one.replace(/[.]+$/, '').toUpperCase().split(/\s+/).filter(Boolean);
-    const bx0 = X(8), bx1 = X(220), by0 = Y(63), by1 = Y(144);
+    const bx0 = X(8), bx1 = X(220), by0 = Y(63), by1 = fy1;   // one band from the spires' feet to the bottom: every row the same size
     for (let R = 2; R <= 12; R++) {
       const h = (by1 - by0 + 2) / R, slots = [];
       for (let r = 0; r < R; r++) { const y0 = by0 + r * h, y1 = y0 + h - 2; slots.push([bx0, y1 > oy - 2 ? ox - 4 : bx1, y0, y1]); }
-      slots.push([X(0), ox - 4, fy0, fy1]);
       const cap = slots.map(([a, b, c, d]) => Math.max(1, Math.round((b - a) / ((d - c) * 6 / 7 * 1.15 + 1))));
       const lines = []; let i = 0;
       for (const c of cap) { const ln = []; let n = 0;
