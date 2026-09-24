@@ -1,29 +1,659 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=resizes-content"
-    />
-    <title>MONOMYTH</title>
-    <!-- THE WALL: scripts and styles from this house only; the wire reaches ONLY
-         the provider doors a key may open; the kingdom travels sealed. -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' blob:; connect-src 'self' https:; object-src 'none'; base-uri 'self'"
-    />
-    <meta name="description" content="MONOMYTH — found a kingdom, walk a path, face dragons." />
-    <meta name="theme-color" content="#ffffff" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-    <meta name="apple-mobile-web-app-title" content="MONOMYTH" />
-    <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="apple-touch-icon" href="./icon-192.png" />
-    <script type="module" crossorigin src="./assets/focus-B7tloXIw.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/focus-BB5fp_DA.css">
-  </head>
-  <body>
-    <div id="root"></div>
-  </body>
-</html>
+<!doctype html><html lang="en"><head><meta charset="utf-8"><title>The Crown</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="stylesheet" href="../fonts.css">
+<link rel="icon" href="icon-192.png"><link rel="manifest" href="manifest.webmanifest"><meta name="apple-mobile-web-app-capable" content="yes">
+<style>
+:root{color-scheme:dark;--ink:#16161e;--panel:#1f1f2b;--line:#34344a;--cream:#ece2ce;--dim:#a9a293;--gold:#ffa512;--bronze:#cc840e;--done:#6d8f6b;--bad:#e8645a;
+--pix:"Dogica",ui-monospace,monospace;--mono:"W95FA",ui-monospace,Menlo,monospace}
+html,body{background:var(--ink);color:var(--cream)}
+body{font:15px/1.55 var(--mono);padding-inline:16px;padding-block:20px 48px}
+.wrap{max-width:760px;margin:0 auto;display:grid;gap:22px}
+h1{font:700 30px/1 var(--pix);letter-spacing:.06em;margin:0;color:var(--cream)}
+h2{font:700 15px/1.2 var(--pix);letter-spacing:.1em;text-transform:uppercase;margin:0;color:var(--gold)}
+.sub{color:var(--dim);margin:6px 0 0;max-width:62ch}
+.stage{display:grid;gap:12px}
+.frame{background:#efe7d6;border:2px solid var(--line);padding:10px;display:grid;place-items:center;min-height:140px}
+.frame img{image-rendering:pixelated;width:100%;max-width:512px;height:auto;display:block}
+.bar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{font:700 13px/1 var(--pix);letter-spacing:.08em;text-transform:uppercase;background:var(--cream);color:var(--ink);border:0;padding:12px 16px;cursor:pointer;box-shadow:inset -3px -3px 0 #b8ad98,inset 3px 3px 0 #fff8ea}
+.btn:active{box-shadow:inset 3px 3px 0 #b8ad98}
+.btn.alt{background:transparent;color:var(--cream);box-shadow:inset 0 0 0 2px var(--cream)}
+.btn:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+#file{position:absolute;width:1px;height:1px;opacity:0}
+.status{font-size:13px;color:var(--dim);min-height:1.4em}
+.status.ok{color:var(--done)}.status.err{color:var(--bad)}
+.hint{font-size:13px;color:var(--dim);margin:0}
+label.f{display:grid;gap:6px;font:700 11px/1 var(--pix);letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+input[type=text],textarea{font:15px/1.45 var(--mono);color:var(--cream);background:var(--panel);border:2px solid var(--line);padding:9px 10px;width:100%;box-sizing:border-box}
+textarea{resize:vertical}
+.one textarea{font-size:17px;min-height:5.2em}
+.spires{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:640px){.spires{grid-template-columns:1fr}}
+.spire{background:var(--panel);border-top:4px solid var(--bronze);padding:12px;display:grid;gap:10px;align-content:start}
+.spire .nm{font:700 16px/1 var(--pix);text-transform:uppercase;letter-spacing:.08em;background:transparent;border:0;border-bottom:2px dashed var(--line);padding:4px 0;color:var(--gold)}
+.deed{display:grid;grid-template-columns:auto 1fr auto;gap:6px 8px;align-items:center;padding-bottom:10px;border-bottom:1px solid var(--line)}
+.deed input.w{font:700 13px/1 var(--pix);text-transform:uppercase;letter-spacing:.06em;padding:7px 8px}
+.deed textarea{grid-column:1/-1;font-size:13px;min-height:2.6em;padding:6px 8px}
+.deed.is-done input.w{text-decoration:line-through;color:var(--done)}
+.chk{width:20px;height:20px;accent-color:var(--done)}
+.x{background:none;border:0;color:var(--dim);font:700 16px var(--pix);cursor:pointer;padding:4px}
+.add{font:700 11px/1 var(--pix);letter-spacing:.08em;text-transform:uppercase;background:none;border:2px dashed var(--line);color:var(--dim);padding:9px;cursor:pointer}
+details{background:var(--panel);padding:12px 14px}
+summary{cursor:pointer;font:700 13px/1.2 var(--pix);letter-spacing:.08em;text-transform:uppercase;color:var(--cream)}
+details textarea{margin-top:12px;min-height:40vh;font-size:12.5px}
+.count{font-variant-numeric:tabular-nums}
+.foot{font-size:12px;color:var(--dim);border-top:1px solid var(--line);padding-top:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head><body><main class="wrap">
+  <header>
+    <h1>THE CROWN</h1>
+    <p class="sub">Your kingdom lives inside the crown. Opening one writes it into this Monomyth, Sword pages included. Sealing one gathers everything this Monomyth holds into a new crown.</p>
+  </header>
+
+  <section class="stage" aria-label="Current crown">
+    <div class="frame"><img id="crown" alt="The crown: your kingdom stacked as words, twinkling, with Orv in the corner"></div>
+    <div class="bar">
+      <label class="btn" for="file">Open a crown</label>
+      <input id="file" type="file" accept="image/png,image/gif,.png,.gif">
+      <button class="btn alt" id="seal" type="button">Seal a new crown</button>
+      <button class="btn alt" id="save" type="button" hidden>Save</button>
+    </div>
+    <p class="status" id="status" role="status"></p>
+    <p class="hint">Tap Save to keep the crown (or press and hold it). Keep the PNG itself. A screenshot holds one frame and can't carry the kingdom.</p>
+  </section>
+
+  <section class="one">
+    <label class="f" for="one">The one thing
+      <textarea id="one" rows="3"></textarea></label>
+  </section>
+
+  <section style="display:grid;gap:12px">
+    <h2>The three spires</h2>
+    <div class="spires" id="spires"></div>
+  </section>
+
+  <section style="display:grid;gap:12px">
+    <label class="f" for="king">Your name on the crown
+      <input type="text" id="king"></label>
+    <label class="f" for="law">The law you're playing by
+      <input type="text" id="law"></label>
+  </section>
+
+  <details id="obk">
+    <summary>The Overbook · <span class="count" id="obc"></span></summary>
+    <textarea id="overbook" spellcheck="false" aria-label="The Overbook, your full ledger"></textarea>
+  </details>
+
+  <p class="foot"><a href="../index.html" style="color:inherit">The Sword</a> · Each spire word fits 7 letters. A crown carries about 1.3 KB per frame, so a large Overbook makes a longer GIF. Nothing leaves this page: the kingdom lives in the crown you save, and a draft stays in this browser until you seal.</p>
+</main>
+<script>
+const GLYPHS={" ":[0,0,0,0,0],"!":[0,0,95,0,0],"\"":[0,7,0,7,0],"#":[20,127,20,127,20],"$":[36,42,127,42,18],"%":[35,19,8,100,98],"&":[54,73,85,34,80],"(":[0,28,34,65,0],")":[0,65,34,28,0],"*":[20,8,62,8,20],"+":[8,8,62,8,8],",":[0,80,48,0,0],"-":[8,8,8,8,8],".":[0,96,96,0,0],"/":[32,16,8,4,2],"0":[62,81,73,69,62],"1":[0,66,127,64,0],"2":[66,97,81,73,70],"3":[33,65,69,75,49],"4":[24,20,18,127,16],"5":[39,69,69,69,57],"6":[60,74,73,73,48],"7":[1,113,9,5,3],"8":[54,73,73,73,54],"9":[6,73,73,41,30],":":[0,54,54,0,0],";":[0,86,54,0,0],"<":[8,20,34,65,0],"=":[20,20,20,20,20],">":[0,65,34,20,8],"?":[2,1,81,9,6],"@":[50,73,121,65,62],"A":[126,17,17,17,126],"B":[127,73,73,73,54],"C":[62,65,65,65,34],"D":[127,65,65,34,28],"E":[127,73,73,73,65],"F":[127,9,9,9,1],"G":[62,65,73,73,122],"H":[127,8,8,8,127],"I":[0,65,127,65,0],"J":[32,64,65,63,1],"K":[127,8,20,34,65],"L":[127,64,64,64,64],"M":[127,2,12,2,127],"N":[127,4,8,16,127],"O":[62,65,65,65,62],"P":[127,9,9,9,6],"Q":[62,65,81,33,94],"R":[127,9,25,41,70],"S":[70,73,73,73,49],"T":[1,1,127,1,1],"U":[63,64,64,64,63],"V":[31,32,64,32,31],"W":[63,64,56,64,63],"X":[99,20,8,20,99],"Y":[7,8,112,8,7],"Z":[97,81,73,69,67],"[":[0,127,65,65,0],"\\":[2,4,8,16,32],"]":[0,65,65,127,0],"^":[4,2,1,2,4],"_":[64,64,64,64,64],"`":[0,1,2,4,0],"a":[32,84,84,84,120],"b":[127,72,68,68,56],"c":[56,68,68,68,32],"d":[56,68,68,72,127],"e":[56,84,84,84,24],"f":[8,126,9,1,2],"g":[12,82,82,82,62],"h":[127,8,4,4,120],"i":[0,68,125,64,0],"j":[32,64,68,61,0],"k":[127,16,40,68,0],"l":[0,65,127,64,0],"m":[124,4,24,4,120],"n":[124,8,4,4,120],"o":[56,68,68,68,56],"p":[124,20,20,20,8],"q":[8,20,20,24,124],"r":[124,8,4,4,8],"s":[72,84,84,84,32],"t":[4,63,68,64,32],"u":[60,64,64,32,124],"v":[28,32,64,32,28],"w":[60,64,48,64,60],"x":[68,40,16,40,68],"y":[12,80,80,80,60],"z":[68,100,84,76,68],"{":[0,8,54,65,0],"|":[0,0,127,0,0],"}":[0,65,54,8,0],"~":[8,8,42,28,8],"·":[0,24,24,0,0],"—":[8,8,8,8,8],"×":[0,34,20,34,0],"…":[96,0,96,0,96],"’":[0,5,3,0,0],"“":[0,7,0,7,0],"”":[0,7,0,7,0],"₥":[127,4,7,4,127]};
+const ORV=[{"pal":{"a":"#141733","b":"#0c1629","c":"#0c131c","d":"#d84446","e":"#ea6857","f":"#dfd1bd","g":"#393f52","h":"#772239","i":"#d73d45","j":"#cd3e52","k":"#55676c","l":"#0b1631","m":"#733250","n":"#b69574","o":"#a92745","p":"#962545","q":"#b74545","r":"#4a2c3a","s":"#576b72","t":"#e97160","u":"#b8a79b","v":"#a72339","w":"#b29e9b","x":"#363c4d","y":"#741d41","z":"#32142c","A":"#160b27","B":"#5b3647","C":"#573439","D":"#763848","E":"#89233b","F":"#a6212d","G":"#e54447","H":"#971c37","!":"#FFD98A","@":"#FFF4CE"},"rows":[".....a......na.......",".....raltetaan.......",".....DneitddBa.......",".....bGddAwwjD.......",".....BEHfffffd.......","....aadwffaffa.......","....boiafBaaflb......","....bEpzwfffwma..wa..",".....zyobwurpGA.aab..",".....bbEojjpdp.acacb.",".....abrdjjiGb.aqlcf.","....aDrqcyyDDc.bhbzza","...bnsnqcpEmlqxazypy.","..cnnqBncjeoqpqcDCb..",".azcDgkqqeeeBBhqDC...",".lcDzarsDeeemsyraa...",".qeC.gyqrejtqbaab....","bDfa.rnwsaobqq.......","aaaDbbxaksskss.......","nDDabaskgxggkww......","bDD.abwwb.akkde......",".ab.aeerk.akhio......","....aBha...yhyb......","....Fja....ghrr......","...bDDa.....bra......"]},{"pal":{"a":"#141733","b":"#0c1629","c":"#0c131c","d":"#d84446","e":"#ea6857","f":"#dfd1bd","g":"#393f52","h":"#772239","i":"#d73d45","j":"#cd3e52","k":"#55676c","l":"#0b1631","m":"#733250","n":"#b69574","o":"#a92745","p":"#962545","q":"#b74545","r":"#4a2c3a","s":"#576b72","t":"#e97160","u":"#b8a79b","v":"#a72339","w":"#b29e9b","x":"#363c4d","y":"#741d41","z":"#32142c","A":"#160b27","B":"#5b3647","C":"#573439","D":"#763848","E":"#89233b","F":"#a6212d","G":"#e54447","H":"#971c37","!":"#FFD98A","@":"#FFF4CE"},"rows":[".....raltetaan.......",".....DneitddBa.......",".....bGddAwwjD.......",".....BEHfffffd.......","....aadwffaffa.......","....boiafBaaflb......","....bEpzwfffwma..wa..",".....zyobwurpGA.aab..",".....bbEojjpdp.acacb.",".....abrdjjiGb.aqlcf.","....aDrqcyyDDc.bhbzza","...bnsnqcpEmlqxazypy.","..cnnqBncjeoqpqcDCb..",".azcDgkqqeeeBBhqDC...",".lcDzarsDeeemsyraa...",".qeC.gyqrejtqbaab....","bDfa.rnwsaobqq.......","aaaDbbxaksskss.......","nDDabaskgxggkww......","bDD.abwwb.akkde......",".ab.aeerk.akhio......","....aBha...yhyb......","....Fja....ghrr......","...bDDa.....bra......","....................."]},{"pal":{"a":"#141733","b":"#0c1629","c":"#0c131c","d":"#d84446","e":"#ea6857","f":"#dfd1bd","g":"#393f52","h":"#772239","i":"#d73d45","j":"#cd3e52","k":"#55676c","l":"#0b1631","m":"#733250","n":"#b69574","o":"#a92745","p":"#962545","q":"#b74545","r":"#4a2c3a","s":"#576b72","t":"#e97160","u":"#b8a79b","v":"#a72339","w":"#b29e9b","x":"#363c4d","y":"#741d41","z":"#32142c","A":"#160b27","B":"#5b3647","C":"#573439","D":"#763848","E":"#89233b","F":"#a6212d","G":"#e54447","H":"#971c37","!":"#FFD98A","@":"#FFF4CE"},"rows":[".....a......na.......",".....raltetaan.......",".....DneitddBa.......",".....bGddAwwjD.......",".....BEHfffffd.......","....aadwffaffa.......","....boiafBaaflb......","....bEpzwfffwma..wa..",".....zyobwurpGA.aab..",".....bbEojjpdp.acacb!",".....abrdjjiGb.aqlcf.","....aDrqcyyDDc.bhbzza","...bnsnqcpEmlqxazypy.","..cnnqBncjeoqpqcDCb!@",".azcDgkqqeeeBBhqDC...",".lcDzarsDeeemsyraa...",".qeC.gyqrejtqbaab....","bDfa.rnwsaobqq.......","aaaDbbxaksskss.......","nDDabaskgxggkww......","bDD.abwwb.akkde......",".ab.aeerk.akhio......","....aBha...yhyb......","....Fja....ghrr......","...bDDa.....bra......"]},{"pal":{"a":"#141733","b":"#0c1629","c":"#0c131c","d":"#d84446","e":"#ea6857","f":"#dfd1bd","g":"#393f52","h":"#772239","i":"#d73d45","j":"#cd3e52","k":"#55676c","l":"#0b1631","m":"#733250","n":"#b69574","o":"#a92745","p":"#962545","q":"#b74545","r":"#4a2c3a","s":"#576b72","t":"#e97160","u":"#b8a79b","v":"#a72339","w":"#b29e9b","x":"#363c4d","y":"#741d41","z":"#32142c","A":"#160b27","B":"#5b3647","C":"#573439","D":"#763848","E":"#89233b","F":"#a6212d","G":"#e54447","H":"#971c37","!":"#FFD98A","@":"#FFF4CE"},"rows":[".....a......na.......",".....raltetaan.......",".....DneitddBa.......",".....bGddAwwjD.......",".....BEHfffffd.......","....aadwffaffa.......","....boiafBaaflb...!.@","....bEpzwfffwma..wa..",".....zyobwurpGA.aab..",".....bbEojjpdp.acacb.",".....abrdjjiGb.aqlcf.","....aDrqcyyDDc.bhbzza","...bnsnqcpEmlqxazypy!","..cnnqBncjeoqpqcDCb..",".azcDgkqqeeeBBhqDC.@.",".lcDzarsDeeemsyraa...",".qeC.gyqrejtqbaab....","bDfa.rnwsaobqq.......","aaaDbbxaksskss.......","nDDabaskgxggkww......","bDD.abwwb.akkde......",".ab.aeerk.akhio......","....aBha...yhyb......","....Fja....ghrr......","...bDDa.....bra......"]}];
+// THE CROWN — codec. The kingdom as a crown of words; every letter pixel twinkles
+// through THE 23 + white + black, and the twinkling carries the whole kingdom.
+// Frame 0 is the legible frame (cream words). Written as an animated GIF so it
+// moves everywhere; one palette, no dithering, every pixel exact.
+const CROWN = (() => {
+  const W = 240, SCALE = 3, PITCH = 9, BASEB = 25;
+  const BG = [22, 22, 30], CREAM = [236, 226, 206];
+  const hsl = (h, s, l) => {
+    const f = (n) => { const k = (n + h * 12) % 12, a = s * Math.min(l, 1 - l);
+      return Math.round((l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1))) * 255); };
+    return [f(0), f(8), f(4)];
+  };
+  const H0 = 38.82 / 360;                          // the hue of #ffa512
+  const SYM = [];
+  for (let i = 0; i < 23; i++) SYM.push(hsl((H0 + i / 23) % 1, 1, 0.54));
+  SYM.push([255, 255, 255], [0, 0, 0]);            // 25 symbols
+
+  // ── palette: bg, cream, the 25, then Orv's own tones ──
+  const hex = (v) => [1, 3, 5].map((i) => parseInt(v.slice(i, i + 2), 16));
+  const PAL = [BG, CREAM, ...SYM];
+  const orvIdx = ORV.map((f) => { const m = {};
+    for (const [k, v] of Object.entries(f.pal)) { const c = hex(v);
+      let j = PAL.findIndex((p) => p[0] === c[0] && p[1] === c[1] && p[2] === c[2]);
+      if (j < 0) { PAL.push(c); j = PAL.length - 1; } m[k] = j; }
+    return m; });
+  while (PAL.length < 256) PAL.push([0, 0, 0]);
+
+  // ── the face: Monomyth's own 5x7, bold the Chicago way ──
+  const cols = (ch, bold) => { const g = GLYPHS[ch] || GLYPHS['?'];
+    return g.map((c, i) => (bold && i > 0 ? c | g[i - 1] : c) & 0x7f); };
+  const adv = (bold) => (bold ? 7 : 6);
+  const wordW = (s, bold = true) => s.length * adv(bold) - 1;
+  const put = (set, s, x, y, bold = true) => {
+    [...s].forEach((ch, i) => cols(ch, bold).forEach((col, cx) => {
+      for (let cy = 0; cy < 7; cy++) if (col & (1 << cy)) set.add((y + cy) * 4096 + x + i * adv(bold) + cx);
+    }));
+  };
+  const wrap = (text, max) => { const out = []; let cur = '';
+    for (const w of text.split(/\s+/).filter(Boolean)) { const t = cur ? cur + ' ' + w : w;
+      if (wordW(t) <= max) cur = t; else { if (cur) out.push(cur); cur = w; } }
+    if (cur) out.push(cur); return out; };
+
+  function layout(k) {
+    const m = new Set(), cx = [Math.floor(W / 6), W / 2, W - Math.floor(W / 6)];
+    const sp = k.spires.map((s) => [s.name, ...s.deeds.map((d) => d.w)].map((x) => x.toUpperCase()));
+    const tallest = Math.max(...sp.map((c) => c.length));
+    const bottom = 6 + tallest * PITCH;
+    sp.forEach((col, i) => {
+      const t = bottom - col.length * PITCH;
+      col.forEach((w, j) => put(m, w, Math.round(cx[i] - wordW(w) / 2), t + j * PITCH));
+      const peak = col.length === tallest ? 4 : 3;
+      for (let r = 0; r < peak; r++) for (let dx = -r; dx <= r; dx++) m.add((t - 1 - peak + r) * 4096 + cx[i] + dx);
+    });
+    let y = bottom + 3;
+    for (const ln of wrap(k.one.toUpperCase(), W - 8)) { put(m, ln, Math.round(W / 2 - wordW(ln) / 2), y); y += PITCH; }
+    const order = [...m].sort((a, b) => a - b).map((v) => [v % 4096, Math.floor(v / 4096)]);
+    return { order, zone: y + 1 };
+  }
+
+  // ── bytes <-> cells: 7 bytes ride 13 cells of base 25 ──
+  function toDigits(bytes) { const out = [];
+    for (let i = 0; i < bytes.length; i += 7) {
+      let n = 0n; for (let j = 0; j < 7; j++) n = (n << 8n) | BigInt(bytes[i + j] ?? 0);
+      const d = []; for (let j = 0; j < 13; j++) { d.push(Number(n % 25n)); n /= 25n; }
+      out.push(...d.reverse()); }
+    return out; }
+  function fromDigits(d) { const out = [];
+    for (let i = 0; i + 13 <= d.length; i += 13) {
+      let n = 0n; for (let j = 0; j < 13; j++) n = n * 25n + BigInt(d[i + j]);
+      n &= (1n << 56n) - 1n; const b = [];
+      for (let j = 0; j < 7; j++) { b.push(Number(n & 255n)); n >>= 8n; }
+      out.push(...b.reverse()); }
+    return Uint8Array.from(out); }
+
+  const CRC_T = (() => { const t = new Uint32Array(256);
+    for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; t[n] = c >>> 0; }
+    return t; })();
+  const crc32 = (b) => { let c = 0xffffffff; for (const x of b) c = CRC_T[(c ^ x) & 255] ^ (c >>> 8); return (c ^ 0xffffffff) >>> 0; };
+  const be = (n, len) => { const a = []; for (let i = len - 1; i >= 0; i--) a.push(Math.floor(n / 2 ** (8 * i)) & 255); return a; };
+  const rd = (b, o, len) => { let n = 0; for (let i = 0; i < len; i++) n = n * 256 + b[o + i]; return n; };
+
+  async function pipe(bytes, stream) {
+    const r = new Blob([bytes]).stream().pipeThrough(stream);
+    return new Uint8Array(await new Response(r).arrayBuffer());
+  }
+  const deflate = (b) => pipe(b, new CompressionStream('deflate'));
+  const inflate = (b) => pipe(b, new DecompressionStream('deflate'));
+
+  // ── GIF writer: one global palette, full frames, LZW ──
+  function lzw(ix) { const out = []; let cur = 0, bits = 0;
+    const emit = (code, size) => { cur |= code << bits; bits += size; while (bits >= 8) { out.push(cur & 255); cur >>>= 8; bits -= 8; } };
+    const CLEAR = 256, EOI = 257; let size = 9, next = 258, dict = new Map();
+    emit(CLEAR, size); let w = ix[0];
+    for (let i = 1; i < ix.length; i++) { const k = ix[i], key = w * 4096 + k, hit = dict.get(key);
+      if (hit !== undefined) { w = hit; continue; }
+      emit(w, size); if (next < 4096) { dict.set(key, next++); if (next > (1 << size) && size < 12) size++; }
+      else { emit(CLEAR, size); dict = new Map(); size = 9; next = 258; }
+      w = k; }
+    emit(w, size); emit(EOI, size); if (bits > 0) out.push(cur & 255);
+    return out; }
+  function writeGif(frames, w, h, delays, pal = PAL) { const o = [];
+    const push = (...a) => { for (const x of a) o.push(x); };
+    push(...'GIF89a'.split('').map((c) => c.charCodeAt(0)), w & 255, w >> 8, h & 255, h >> 8, 0xf7, 0, 0);
+    for (const c of pal) push(...c);
+    push(0x21, 0xff, 11, ...'NETSCAPE2.0'.split('').map((c) => c.charCodeAt(0)), 3, 1, 0, 0, 0);
+    frames.forEach((ix, f) => {
+      const d = Math.round(delays[f] / 10);
+      push(0x21, 0xf9, 4, 0x04, d & 255, d >> 8, 0, 0);
+      push(0x2c, 0, 0, 0, 0, w & 255, w >> 8, h & 255, h >> 8, 0, 8);
+      const data = lzw(ix);
+      for (let i = 0; i < data.length; i += 255) { const s = data.slice(i, i + 255); push(s.length, ...s); }
+      push(0); });
+    push(0x3b); return Uint8Array.from(o); }
+
+  // ── GIF reader (any GIF: local tables, sub-rects, transparency, disposal, interlace) ──
+  function readGif(b) {
+    const w = b[6] | (b[7] << 8), h = b[8] | (b[9] << 8); let p = 13, gct = null;
+    if (b[10] & 0x80) { const n = 2 << (b[10] & 7); gct = b.slice(p, p + 3 * n); p += 3 * n; }
+    const canvas = new Uint8ClampedArray(w * h * 4), frames = []; let gce = { trans: -1, disp: 0 };
+    while (p < b.length) {
+      const t = b[p++];
+      if (t === 0x3b) break;
+      if (t === 0x21) { const lab = b[p++];
+        if (lab === 0xf9) { gce = { disp: (b[p + 1] >> 2) & 7, trans: b[p + 1] & 1 ? b[p + 4] : -1 }; }
+        while (b[p] !== 0) p += b[p] + 1; p++; continue; }
+      if (t !== 0x2c) break;
+      const x0 = b[p] | (b[p + 1] << 8), y0 = b[p + 2] | (b[p + 3] << 8), fw = b[p + 4] | (b[p + 5] << 8), fh = b[p + 6] | (b[p + 7] << 8), fl = b[p + 8]; p += 9;
+      let ct = gct; if (fl & 0x80) { const n = 2 << (fl & 7); ct = b.slice(p, p + 3 * n); p += 3 * n; }
+      const mcs = b[p++], data = []; while (b[p] !== 0) { for (let i = 1; i <= b[p]; i++) data.push(b[p + i]); p += b[p] + 1; } p++;
+      const ix = unlzw(data, mcs, fw * fh);
+      const save = gce.disp === 3 ? canvas.slice() : null;
+      const rows = []; if (fl & 0x40) { for (const [s, st] of [[0, 8], [4, 8], [2, 4], [1, 2]]) for (let r = s; r < fh; r += st) rows.push(r); } else for (let r = 0; r < fh; r++) rows.push(r);
+      rows.forEach((ry, i) => { for (let x = 0; x < fw; x++) { const c = ix[i * fw + x]; if (c === gce.trans) continue;
+        const q = ((y0 + ry) * w + x0 + x) * 4; canvas[q] = ct[c * 3]; canvas[q + 1] = ct[c * 3 + 1]; canvas[q + 2] = ct[c * 3 + 2]; canvas[q + 3] = 255; } });
+      frames.push(canvas.slice());
+      if (gce.disp === 2) for (let ry = 0; ry < fh; ry++) canvas.fill(0, ((y0 + ry) * w + x0) * 4, ((y0 + ry) * w + x0 + fw) * 4);
+      if (save) canvas.set(save);
+      gce = { trans: -1, disp: 0 };
+    }
+    return { w, h, frames };
+  }
+  function unlzw(data, mcs, n) {
+    const out = new Uint8Array(n), clear = 1 << mcs, eoi = clear + 1;
+    let size = mcs + 1, dict = [], next = clear + 2, prev = null, bit = 0, o = 0;
+    const reset = () => { dict = []; for (let i = 0; i < clear; i++) dict[i] = [i]; size = mcs + 1; next = clear + 2; prev = null; };
+    reset();
+    while (o < n) {
+      let code = 0; for (let i = 0; i < size; i++) { const byte = data[(bit + i) >> 3]; if (byte === undefined) return out; code |= ((byte >> ((bit + i) & 7)) & 1) << i; } bit += size;
+      if (code === clear) { reset(); continue; } if (code === eoi) break;
+      let entry = dict[code] ?? (prev ? [...prev, prev[0]] : null); if (!entry) break;
+      for (const v of entry) if (o < n) out[o++] = v;
+      if (prev && next < 4096) { dict[next++] = [...prev, entry[0]]; if (next === 1 << size && size < 12) size++; }
+      prev = entry;
+    }
+    return out;
+  }
+
+  // ── v3 (his word, 09-24 noon): black words on paper; the kingdom rides only the
+  //    COLOURED cells, which swirl through the letters; the block drifts a cell or two
+  //    left/right and, now and then, one up. The reader ignores black, so motion and
+  //    swirl cost nothing to decode. 9 bytes ride 16 cells of base 23. ──
+  const PAPER = [239, 231, 214], INKB = [16, 16, 22];
+  const PAL3 = [PAPER, INKB, ...SYM.slice(0, 23)];
+  const orvIdx3 = ORV.map((f) => { const m = {};
+    for (const [k, v] of Object.entries(f.pal)) { const c = hex(v);
+      let j = PAL3.findIndex((p) => p[0] === c[0] && p[1] === c[1] && p[2] === c[2]);
+      if (j < 0) { PAL3.push(c); j = PAL3.length - 1; } m[k] = j; }
+    return m; });
+  while (PAL3.length < 256) PAL3.push([0, 0, 0]);
+  const BW = 156, M3 = 3;                           // the crown box (cells) and its drift margin
+  function layout3(k) {
+    const m = new Set(), cx = [24, BW / 2, BW - 24];
+    const sp = k.spires.map((s) => [s.name, ...s.deeds.map((d) => d.w)].map((x) => x.toUpperCase().slice(0, 7)));
+    const tallest = Math.max(...sp.map((c) => c.length)), bottom = 6 + tallest * PITCH;
+    sp.forEach((col, i) => { const t = bottom - col.length * PITCH;
+      col.forEach((w, j) => put(m, w, Math.round(cx[i] - wordW(w) / 2), t + j * PITCH));
+      const peak = col.length === tallest ? 4 : 3;
+      for (let r = 0; r < peak; r++) for (let dx = -r; dx <= r; dx++) m.add((t - 1 - peak + r) * 4096 + Math.round(cx[i]) + dx); });
+    let y = bottom + 3;
+    for (const ln of wrap(k.one.toUpperCase(), BW)) { put(m, ln, Math.round(BW / 2 - wordW(ln) / 2), y); y += PITCH; }
+    return { cells: [...m].sort((a, b) => a - b).map((v) => [v % 4096, Math.floor(v / 4096)]), h: y - 2 };
+  }
+  function toD23(bytes) { const out = [];
+    for (let i = 0; i < bytes.length; i += 9) { let n = 0n; for (let j = 0; j < 9; j++) n = (n << 8n) | BigInt(bytes[i + j] ?? 0);
+      const d = []; for (let j = 0; j < 16; j++) { d.push(Number(n % 23n)); n /= 23n; } out.push(...d.reverse()); }
+    return out; }
+  function fromD23(d) { const out = [];
+    for (let i = 0; i + 16 <= d.length; i += 16) { let n = 0n; for (let j = 0; j < 16; j++) n = n * 23n + BigInt(d[i + j]);
+      n &= (1n << 72n) - 1n; const b = []; for (let j = 0; j < 9; j++) { b.push(Number(n & 255n)); n >>= 8n; } out.push(...b.reverse()); }
+    return Uint8Array.from(out); }
+  const hash = (a, b, c) => { let h = (a * 374761393 + b * 668265263 + c * 2147483647) >>> 0; h = Math.imul(h ^ (h >>> 13), 1274126177); return ((h ^ (h >>> 16)) >>> 0) / 4294967296; };
+  const swirl = (x, y, f, cyc) => { const cx = BW / 2, cy = 30, a = Math.atan2(y - cy, x - cx), r = Math.hypot(x - cx, y - cy);
+    return 0.5 + 0.32 * Math.sin(a * 3 + r * 0.16 - f * 2 * Math.PI / cyc) + 0.18 * (hash(x, y, f) - 0.5) * 2; };
+  const DRIFT = [[0,0],[1,0],[2,0],[1,0],[0,0],[-1,0],[-2,0],[-1,0],[0,0],[1,-1],[1,0],[0,0],[-1,0],[-2,0],[-1,0],[0,0]];
+  // ── v4 (his word, 09-24): the Camp icon. A dark rounded box; inside it THE CROWN,
+  //    gold, three flat-topped spires (centre tallest), a band, a dark stripe, a foot.
+  //    The words are black, set INSIDE the gold; the kingdom swirls through them in
+  //    colour. Orv and the date sit inside the box, under the crown. ──
+  const BOXC = [27, 27, 29], RIM = [58, 58, 62], GOLD = [226, 176, 72], GOLDD = [176, 128, 40];
+  const PAL4 = [BOXC, INKB, ...SYM.slice(0, 23), RIM, GOLD, GOLDD, CREAM];
+  const orvIdx4 = ORV.map((f) => { const m = {};
+    for (const [k, v] of Object.entries(f.pal)) { const c = hex(v);
+      let j = PAL4.findIndex((p) => p[0] === c[0] && p[1] === c[1] && p[2] === c[2]);
+      if (j < 0) { PAL4.push(c); j = PAL4.length - 1; } m[k] = j; }
+    return m; });
+  while (PAL4.length < 256) PAL4.push([0, 0, 0]);
+  const I_RIM = 25, I_GOLD = 26, I_GOLDD = 27, I_CREAM = 28;
+  const CWc = 220, CHc = 176, BOX = 324, S4 = 2;
+  const CX0 = 52, CY0 = 70;                          // the crown's place in the box
+  const inCrown = (x, y) => (
+    (x >= 88 && x < 146 && y >= 0 && y < 144) ||    // centre spire
+    (x >= 8 && x < 54 && y >= 30 && y < 144) ||      // left spire
+    (x >= 168 && x < 220 && y >= 30 && y < 144) ||   // right spire
+    (x >= 8 && x < 220 && y >= 62 && y < 144) ||     // the band
+    (x >= 0 && x < 8 && y >= 80 && y < 144) ||       // the left jut
+    (x >= 0 && x < 220 && y >= 154 && y < 176));     // the foot
+  function layout4(k) {
+    const m = new Set();
+    const sp = k.spires.map((s) => [s.name, ...s.deeds.map((d) => d.w)].map((x) => x.toUpperCase().slice(0, 6)));
+    const cols4 = [[31, 36], [117, 8], [194, 36]];
+    sp.forEach((col, i) => col.forEach((w, j) => put(m, w, Math.round(cols4[i][0] - wordW(w) / 2), cols4[i][1] + j * PITCH)));
+    const low = Math.max(...sp.map((c, i) => cols4[i][1] + c.length * PITCH));
+    const lines = wrap(k.one.toUpperCase(), 212), top = low + 6;
+    lines.forEach((ln, i) => put(m, ln, Math.round(114 - wordW(ln) / 2), top + i * PITCH));
+    return [...m].sort((a, b) => a - b).map((v) => [v % 4096, Math.floor(v / 4096)]).filter(([x, y]) => inCrown(x, y));
+  }
+  const swirl4 = (x, y, f, cyc) => { const cx = 114, cy = 70, a = Math.atan2(y - cy, x - cx), r = Math.hypot(x - cx, y - cy);
+    return 0.5 + 0.32 * Math.sin(a * 3 + r * 0.12 - f * 2 * Math.PI / cyc) + 0.18 * (hash(x, y, f) - 0.5) * 2; };
+  // ── v5 (his word, 09-24): JUST WORDS. The Camp crown is only the frame's limits —
+  //    the spire words stand where the spires stand, the one thing fills the band, and
+  //    nothing is drawn but words, Orv (in the valley right of the centre spire) and
+  //    the stamp (along the foot). Black words on paper; the kingdom swirls in colour. ──
+  const PAL5 = [PAPER, INKB, ...SYM.slice(0, 23)];
+  const orvIdx5 = ORV.map((f) => { const m = {};
+    for (const [k, v] of Object.entries(f.pal)) { const c = hex(v);
+      let j = PAL5.findIndex((p) => p[0] === c[0] && p[1] === c[1] && p[2] === c[2]);
+      if (j < 0) { PAL5.push(c); j = PAL5.length - 1; } m[k] = j; }
+    return m; });
+  while (PAL5.length < 256) PAL5.push([0, 0, 0]);
+  // ── v6 (his word, 09-24): an INVISIBLE SQUARE. Every word lives inside it and the
+  //    words fill it: the three spires across the top (the centre one rising highest),
+  //    the one thing as large as it can stand below them, Orv in the lower-right corner
+  //    with the stamp beside him. Nothing is drawn but words and Orv. ──
+  const N6 = 256, S6 = 2, M6 = 3;
+  const putS = (set, s, x, y, sc, bold = true) => {
+    [...s].forEach((ch, i) => cols(ch, bold).forEach((col, cx) => {
+      for (let cy = 0; cy < 7; cy++) if (col & (1 << cy))
+        for (let a = 0; a < sc; a++) for (let b = 0; b < sc; b++) set.add((y + cy * sc + b) * 4096 + x + (i * adv(bold) + cx) * sc + a);
+    }));
+  };
+  const wS = (s, sc, bold = true) => (s.length * adv(bold) - 1) * sc;
+  function layout6(k) {
+    const m = new Set(), inner = N6 - 2 * M6;
+    const sp = k.spires.map((s) => [s.name, ...s.deeds.map((d) => d.w)].map((x) => x.toUpperCase().slice(0, 6)));
+    const colW = inner / 3, widest = Math.max(...sp.flat().map((w) => wS(w, 1)));
+    const ss = Math.max(1, Math.floor((colW - 1) / widest));          // spire scale: as big as the widest word allows
+    const sPitch = 7 * ss + Math.max(2, ss * 2), tall = Math.max(...sp.map((c) => c.length));
+    const sBottom = M6 + tall * sPitch;
+    sp.forEach((col, i) => { const cx = M6 + colW * (i + 0.5), t = sBottom - col.length * sPitch;
+      col.forEach((w, j) => putS(m, w, Math.round(cx - wS(w, ss) / 2), t + j * sPitch, ss)); });
+    const oh = ORV[0].rows.length, reserve = oh + 3;
+    const top = sBottom + 4, avail = N6 - M6 - reserve - top;
+    let os = 1, lines = [];
+    for (let sc = 6; sc >= 1; sc--) { const ls = wrapS(k.one.toUpperCase(), inner, sc);
+      if (ls.length * (7 * sc + 2 * sc) - 2 * sc <= avail) { os = sc; lines = ls; break; } }
+    const oPitch = 7 * os + 2 * os, used = lines.length * oPitch - 2 * os, extra = Math.floor((avail - used) / Math.max(1, lines.length));
+    lines.forEach((ln, i) => putS(m, ln, Math.round(N6 / 2 - wS(ln, os) / 2), top + Math.floor(extra / 2) + i * (oPitch + extra), os));
+    return [...m].sort((a, b) => a - b).map((v) => [v % 4096, Math.floor(v / 4096)]);
+  }
+  function wrapS(text, max, sc) { const out = []; let cur = '';
+    for (const w of text.split(/\s+/).filter(Boolean)) { const t = cur ? cur + ' ' + w : w;
+      if (wS(t, sc) <= max) cur = t; else { if (cur) out.push(cur); cur = w; if (wS(w, sc) > max) return Array(99).fill(''); } }
+    if (cur) out.push(cur); return out; }
+  const swirl6 = (x, y, f, cyc) => { const cx = N6 / 2, cy = N6 * 0.4, a = Math.atan2(y - cy, x - cx), r = Math.hypot(x - cx, y - cy);
+    return 0.5 + 0.32 * Math.sin(a * 3 + r * 0.07 - f * 2 * Math.PI / cyc) + 0.18 * (hash(x, y, f) - 0.5) * 2; };
+  async function seal6(k) {
+    const cells = layout6(k), P = N6 * S6;
+    const z = await deflate(new TextEncoder().encode(JSON.stringify(k)));
+    const blob = Uint8Array.from([...be(z.length, 4), ...be(crc32(z), 4), ...z]);
+    const cell = (ix, x, y, c) => { for (let dy = 0; dy < S6; dy++) ix.fill(c, (y * S6 + dy) * P + x * S6, (y * S6 + dy) * P + x * S6 + S6); };
+    const base = new Uint8Array(P * P);
+    const oh = ORV[0].rows.length, ow = ORV[0].rows[0].length, ox = N6 - M6 - ow, oy = N6 - M6 - oh;
+    const when = k.at.slice(11, 16) + ' · ' + k.at.slice(5, 7) + '.' + k.at.slice(8, 10) + '.' + k.at.slice(0, 4);
+    [k.king.toUpperCase(), when].forEach((line, li) => { const x0 = ox - 5 - wS(line, 1, false), y0 = N6 - M6 - 16 + li * 9;
+      [...line].forEach((ch, i) => cols(ch, false).forEach((col, cx) => { for (let cy = 0; cy < 7; cy++) if (col & (1 << cy)) cell(base, x0 + i * 6 + cx, y0 + cy, 1); })); });
+    const frame = (f, dx, dy, ink) => { const ix = base.slice();
+      cells.forEach(([x, y], c) => cell(ix, x + dx, y + dy, ink(c, x, y)));
+      const o = ORV[f % 4]; o.rows.forEach((row, r) => [...row].forEach((ch, c) => { const j = orvIdx5[f % 4][ch]; if (j !== undefined) cell(ix, ox + c, oy + r, j); }));
+      return ix; };
+    const frames = [frame(0, 0, 0, () => 1)];
+    const CYC = 24, chunks = []; let off = 0, i = 0;
+    while (off < blob.length || i === 0) { const f = i + 1, [dx, dy] = DRIFT[f % DRIFT.length];
+      const lit = cells.map(([x, y]) => swirl6(x, y, f, CYC) > 0.5), n = lit.filter(Boolean).length, per = Math.floor(n / 16) * 9 - 11;
+      const ch = blob.slice(off, off + per); off += ch.length; chunks.push({ ch, lit, dx, dy }); if (++i > 4000) throw new Error('kingdom too large'); }
+    chunks.forEach(({ ch, lit, dx, dy }, j) => {
+      const hdr = [77, 67, 3, ...be(j, 2), ...be(chunks.length, 2), ...be(ch.length, 2), ...be(crc32(ch) & 0xffff, 2)];
+      const d = toD23(Uint8Array.from([...hdr, ...ch])); let q = 0;
+      frames.push(frame(j + 1, dx, dy, (c, x, y) => lit[c] ? 2 + (q < d.length ? d[q++] : Math.floor(hash(x, y, j) * 23)) : 1)); });
+    return writeGif(frames, P, P, [1600, ...chunks.map(() => 110)], PAL5);
+  }
+
+  // ── PNG, animated (APNG): a true PNG. Palette colour, no filtering, zlib via
+  //    CompressionStream. Viewers that don't animate show frame 0, the legible crown;
+  //    every frame is still inside the file. ──
+  const pngChunk = (type, data) => { const t = [...type].map((c) => c.charCodeAt(0));
+    return [...be(data.length, 4), ...t, ...data, ...be(crc32(Uint8Array.from([...t, ...data])), 4)]; };
+  async function writePng(frames, w, h, delays, pal) {
+    const out = [137, 80, 78, 71, 13, 10, 26, 10];
+    const push = (a) => { for (let i = 0; i < a.length; i++) out.push(a[i]); };
+    push(pngChunk('IHDR', [...be(w, 4), ...be(h, 4), 8, 3, 0, 0, 0]));
+    push(pngChunk('PLTE', pal.flat()));
+    push(pngChunk('acTL', [...be(frames.length, 4), 0, 0, 0, 0]));
+    let seq = 0;
+    for (let f = 0; f < frames.length; f++) {
+      push(pngChunk('fcTL', [...be(seq++, 4), ...be(w, 4), ...be(h, 4), 0, 0, 0, 0, 0, 0, 0, 0, ...be(delays[f], 2), ...be(1000, 2), 0, 0]));
+      const raw = new Uint8Array((w + 1) * h);
+      for (let y = 0; y < h; y++) raw.set(frames[f].subarray(y * w, y * w + w), y * (w + 1) + 1);
+      const z = await deflate(raw);
+      if (f === 0) push(pngChunk('IDAT', z)); else push(pngChunk('fdAT', [...be(seq++, 4), ...z]));
+    }
+    push(pngChunk('IEND', []));
+    return Uint8Array.from(out);
+  }
+  const isPng = (b) => b[0] === 137 && b[1] === 80 && b[2] === 78 && b[3] === 71;
+  async function readPng(b) {
+    let p = 8, w = 0, h = 0, ct = 0, depth = 8, pal = null, cur = null; const parts = [];
+    while (p < b.length) { const len = rd(b, p, 4), type = String.fromCharCode(...b.slice(p + 4, p + 8)), d = b.subarray(p + 8, p + 8 + len); p += 12 + len;
+      if (type === 'IHDR') { w = rd(d, 0, 4); h = rd(d, 4, 4); depth = d[8]; ct = d[9]; }
+      else if (type === 'PLTE') pal = d;
+      else if (type === 'fcTL') { cur = { fw: rd(d, 4, 4), fh: rd(d, 8, 4), x: rd(d, 12, 4), y: rd(d, 16, 4), data: [] }; parts.push(cur); }
+      else if (type === 'IDAT') { if (!cur) { cur = { fw: w, fh: h, x: 0, y: 0, data: [] }; parts.push(cur); } cur.data.push(d); }
+      else if (type === 'fdAT') cur.data.push(d.subarray(4));
+      else if (type === 'IEND') break; }
+    const bpp = { 0: 1, 2: 3, 3: 1, 4: 2, 6: 4 }[ct] * (depth / 8);
+    const canvas = new Uint8ClampedArray(w * h * 4), frames = [];
+    for (const fr of parts) { if (!fr.data.length) continue;
+      const cat = new Uint8Array(fr.data.reduce((n, a) => n + a.length, 0)); let o = 0; for (const a of fr.data) { cat.set(a, o); o += a.length; }
+      const raw = await inflate(cat), stride = fr.fw * bpp, img = new Uint8Array(stride * fr.fh);
+      for (let y = 0; y < fr.fh; y++) { const ft = raw[y * (stride + 1)], src = raw.subarray(y * (stride + 1) + 1, (y + 1) * (stride + 1));
+        for (let i = 0; i < stride; i++) { const a = i >= bpp ? img[y * stride + i - bpp] : 0, u = y ? img[(y - 1) * stride + i] : 0, c = y && i >= bpp ? img[(y - 1) * stride + i - bpp] : 0;
+          let v = src[i]; if (ft === 1) v += a; else if (ft === 2) v += u; else if (ft === 3) v += (a + u) >> 1;
+          else if (ft === 4) { const pp = a + u - c, pa = Math.abs(pp - a), pb = Math.abs(pp - u), pc = Math.abs(pp - c); v += pa <= pb && pa <= pc ? a : pb <= pc ? u : c; }
+          img[y * stride + i] = v & 255; } }
+      for (let y = 0; y < fr.fh; y++) for (let x = 0; x < fr.fw; x++) { const q = ((fr.y + y) * w + fr.x + x) * 4, s = (y * fr.fw + x) * bpp;
+        if (ct === 3) { const i = img[s]; canvas[q] = pal[i * 3]; canvas[q + 1] = pal[i * 3 + 1]; canvas[q + 2] = pal[i * 3 + 2]; }
+        else if (ct === 2 || ct === 6) { canvas[q] = img[s]; canvas[q + 1] = img[s + 1]; canvas[q + 2] = img[s + 2]; }
+        else { canvas[q] = canvas[q + 1] = canvas[q + 2] = img[s]; }
+        canvas[q + 3] = 255; }
+      frames.push(canvas.slice()); }
+    return { w, h, frames };
+  }
+
+  // ── v7 (his word, 09-24 12:40): FAT WORDS STACKED TIGHT, Orv in the centre, the
+  //    crown of words filling every bit of the square around him; the stamp beneath
+  //    it all in the lower-right corner. The spire labels are gone; only deeds stand.
+  //    Written as a true PNG (APNG). ──
+  const N7 = 256, S7 = 2, M7 = 3, OS = 2;           // square (cells), px per cell, margin, Orv's integer zoom
+  const putXY = (set, s, x, y, sx, sy) => {
+    [...s].forEach((ch, i) => cols(ch, true).forEach((col, cx) => {
+      for (let cy = 0; cy < 7; cy++) if (col & (1 << cy))
+        for (let a = 0; a < sx; a++) for (let b = 0; b < sy; b++) set.add((y + cy * sy + b) * 4096 + x + (i * 7 + cx) * sx + a);
+    }));
+  };
+  function flow7(words, sx, sy, ox, oy, ow, oh, bottom) {
+    const lh = 7 * sy, gap = 1, space = 3 * sx, pad = 3, rows = []; let y = M7, i = 0;
+    while (y + lh <= bottom && i < words.length) {
+      const hitsOrv = y < oy + oh + pad && y + lh > oy - pad;
+      const segs = hitsOrv ? [[M7, ox - pad], [ox + ow + pad, N7 - M7]] : [[M7, N7 - M7]];
+      for (const [a, b] of segs) { const row = { y, a, b, w: [] }; let used = 0;
+        while (i < words.length) { const need = (row.w.length ? space : 0) + wS(words[i], sx); if (used + need > b - a) break; row.w.push(words[i]); used += need; i++; }
+        if (row.w.length) rows.push(row); }
+      y += lh + gap;
+    }
+    return { rows, done: i >= words.length, end: y };
+  }
+  // v8 (his word, 09-24 13:30): "it needs to be the shape of the crown." The words
+  // themselves draw the Camp icon's crown: every row of text is cut to the crown's own
+  // outline (three flat-topped spires, the band, the foot), each piece stretched to
+  // fill its span, Orv standing in the heart of the band.
+  const CF = (N7 - 2 * M7) / CWc, CX = M7, CY = M7;
+  const crownAt = (x, y) => inCrown(Math.floor((x - CX) / CF), Math.floor((y - CY) / CF));
+  function layout7(k) {
+    // every word is stretched to fill its own box, so the boxes ARE the crown:
+    // the deeds stack in their spires, the one thing fills the band around Orv and the foot
+    const m = new Set(), X = (u) => Math.round(CX + u * CF), Y = (u) => Math.round(CY + u * CF);
+    const word = (w, x0, x1, y0, y1) => { const n = w.length, units = n * 6 + (n - 1) * 1, sx = (x1 - x0) / units, sy = (y1 - y0) / 7;
+      [...w].forEach((ch, j) => cols(ch, true).forEach((col, cx) => { for (let cy = 0; cy < 7; cy++) if (col & (1 << cy)) {
+        const xa = Math.round(x0 + (j * 7 + cx) * sx), xb = Math.round(x0 + (j * 7 + cx + 1) * sx), ya = Math.round(y0 + cy * sy), yb = Math.round(y0 + (cy + 1) * sy);
+        for (let x = xa; x < Math.max(xb, xa + 1); x++) for (let y = ya; y < Math.max(yb, ya + 1); y++) m.add(y * 4096 + x); } })); };
+    const row = (ws, x0, x1, y0, y1) => { const units = ws.reduce((n, w) => n + w.length * 7 - 1, 0) + (ws.length - 1) * 4, u = (x1 - x0) / units; let x = x0;
+      ws.forEach((w) => { const wu = (w.length * 7 - 1) * u; word(w, x, x + wu, y0, y1); x += wu + 4 * u; }); };
+    const stack = (ws, x0, x1, y0, y1) => { const h = (y1 - y0 + 2) / ws.length; ws.forEach((w, i) => word(w, x0, x1, y0 + i * h, y0 + (i + 1) * h - 2)); };
+    // the spires
+    const deeds = k.spires.map((s) => s.deeds.map((d) => d.w.toUpperCase()).filter(Boolean));
+    const spireBox = [[8, 54, 30, 60], [88, 146, 0, 60], [168, 220, 30, 60]];
+    deeds.forEach((ws, i) => { if (ws.length) { const [a, b, c, d] = spireBox[i]; stack(ws, X(a), X(b), Y(c), Y(d)); } });
+    // Orv, the anchor: the lower-right corner of the words, standing on the foot's line
+    const ow = ORV[0].rows[0].length * OS, oh = ORV[0].rows.length * OS;
+    const fy0 = Y(154), fy1 = Y(176), ox = X(220) - ow, oy = fy1 - oh;
+    // the one thing: band rows, then the foot; any row Orv reaches stops short of him
+    const words = k.one.replace(/[.]+$/, '').toUpperCase().split(/\s+/).filter(Boolean);
+    const bx0 = X(8), bx1 = X(220), by0 = Y(63), by1 = fy1;   // one band from the spires' feet to the bottom: every row the same size
+    for (let R = 2; R <= 12; R++) {
+      const h = (by1 - by0 + 2) / R, slots = [];
+      for (let r = 0; r < R; r++) { const y0 = by0 + r * h, y1 = y0 + h - 2; slots.push([bx0, y1 > oy - 2 ? ox - 4 : bx1, y0, y1]); }
+      const cap = slots.map(([a, b, c, d]) => Math.max(1, Math.round((b - a) / ((d - c) * 6 / 7 * 1.15 + 1))));
+      const lines = []; let i = 0;
+      for (const c of cap) { const ln = []; let n = 0;
+        while (i < words.length && (n === 0 || n + 1 + words[i].length <= c)) { n += (n ? 1 : 0) + words[i].length; ln.push(words[i++]); }
+        lines.push(ln); }
+      if (i < words.length) continue;
+      slots.forEach((sl, j) => { if (lines[j].length) row(lines[j], ...sl); });
+      break;
+    }
+    const bottom = fy1;
+    return { cells: [...m].sort((a, b) => a - b).map((v) => [v % 4096, Math.floor(v / 4096)]), ox, oy, bottom };
+  }
+  async function seal(k) {
+    const { cells, ox, oy, bottom } = layout7(k), P = N7 * S7, GH7 = bottom + 3 + 7 + M7, PH = GH7 * S7;
+    const z = await deflate(new TextEncoder().encode(JSON.stringify(k)));
+    const blob = Uint8Array.from([...be(z.length, 4), ...be(crc32(z), 4), ...z]);
+    const cell = (ix, x, y, c) => { for (let dy = 0; dy < S7; dy++) ix.fill(c, (y * S7 + dy) * P + x * S7, (y * S7 + dy) * P + x * S7 + S7); };
+    const base = new Uint8Array(P * PH);
+    const when = k.at.slice(11, 16) + ' · ' + k.at.slice(5, 7) + '.' + k.at.slice(8, 10) + '.' + k.at.slice(0, 4);
+    const line = k.king.toUpperCase() + ' · ' + when, x0 = N7 - M7 - wS(line, 1, false), y0 = bottom + 3;
+    [...line].forEach((ch, i) => cols(ch, false).forEach((col, cx) => { for (let cy = 0; cy < 7; cy++) if (col & (1 << cy)) cell(base, x0 + i * 6 + cx, y0 + cy, 1); }));
+    const orvC = N7 / 2, orvY = oy + ORV[0].rows.length;
+    const swirl7 = (x, y, f, cyc) => { const a = Math.atan2(y - orvY, x - orvC), r = Math.hypot(x - orvC, y - orvY);
+      const t = Math.sin(f * 2 * Math.PI / cyc);                        // sways one way, then back
+      return 0.5 + 0.5 * Math.sin(a * 2 + r * 0.06 + 2.2 * t) * Math.cos(r * 0.035 - 1.4 * t); };
+    const frame = (f, dx, dy, ink) => { const ix = base.slice();
+      cells.forEach(([x, y], c) => cell(ix, x + dx, y + dy, ink(c, x, y)));
+      const o = ORV[f % 4]; o.rows.forEach((row, r) => [...row].forEach((ch, c) => { const j = orvIdx5[f % 4][ch];
+        if (j !== undefined) for (let a = 0; a < OS; a++) for (let b = 0; b < OS; b++) cell(ix, ox + c * OS + a, oy + r * OS + b, j); }));
+      return ix; };
+    const frames = [frame(0, 0, 0, () => 1)];
+    const CYC = 12, chunks = []; let off = 0, i = 0;
+    while (off < blob.length || i === 0) { const f = i + 1, [dx, dy] = DRIFT[f % DRIFT.length];
+      const lit = cells.map(([x, y]) => swirl7(x, y, f, CYC) > 0.5), n = lit.filter(Boolean).length, per = Math.floor(n / 16) * 9 - 11;
+      const ch = blob.slice(off, off + per); off += ch.length; chunks.push({ ch, lit, dx, dy }); if (++i > 4000) throw new Error('kingdom too large'); }
+    chunks.forEach(({ ch, lit, dx, dy }, j) => {
+      const hdr = [77, 67, 3, ...be(j, 2), ...be(chunks.length, 2), ...be(ch.length, 2), ...be(crc32(ch) & 0xffff, 2)];
+      const d = toD23(Uint8Array.from([...hdr, ...ch])); let q = 0;
+      frames.push(frame(j + 1, dx, dy, (c, x, y) => lit[c] ? 2 + (q < d.length ? d[q++] : Math.floor(hash(x, y, j) * 23)) : 1)); });
+    const delays = [1600, ...chunks.map(() => 150)];
+    return { png: await writePng(frames, P, PH, delays, PAL5.slice(0, 256)), gif: writeGif(frames, P, PH, delays, PAL5) };
+  }
+
+  // ── open: GIF bytes -> kingdom ──
+  async function open(bytes) {
+    const g = isPng(bytes) ? await readPng(bytes) : readGif(bytes), s = g.w / W, got = new Map(); let total = 0;
+    const near = (px, q, c) => (px[q] - c[0]) ** 2 + (px[q + 1] - c[1]) ** 2 + (px[q + 2] - c[2]) ** 2;
+    for (const px of g.frames) { const d = [];
+      for (let y = 0; y < Math.floor(g.h / s); y++) for (let x = 0; x < W; x++) {
+        const q = (Math.floor((y + 0.5) * s) * g.w + Math.floor((x + 0.5) * s)) * 4;
+        if (near(px, q, BG) < 144) continue;
+        let bi = 0, bd = 1e9; SYM.forEach((c, i) => { const e = near(px, q, c); if (e < bd) { bd = e; bi = i; } });
+        if (bd < 144) d.push(bi); }
+      let data = fromDigits(d);
+      if (!(data[0] === 77 && data[1] === 67 && data[2] === 1)) {
+        let ok = false;
+        for (const s3 of [3, 2]) { const d3 = []; for (let y = 0; y < Math.floor(g.h / s3); y++) for (let x = 0; x < Math.floor(g.w / s3); x++) {
+          const q = (Math.floor((y + 0.5) * s3) * g.w + Math.floor((x + 0.5) * s3)) * 4;
+          let bi = -1, bd = 144; for (let i = 0; i < 23; i++) { const e = near(px, q, SYM[i]); if (e < bd) { bd = e; bi = i; } }
+          if (bi >= 0) d3.push(bi); }
+          data = fromD23(d3); if (data[0] === 77 && data[1] === 67 && data[2] === 3 && (crc32(data.slice(11, 11 + rd(data, 7, 2))) & 0xffff) === rd(data, 9, 2)) { ok = true; break; } }
+        if (!ok) continue; }
+      const i = rd(data, 3, 2); total = rd(data, 5, 2); const n = rd(data, 7, 2), ch = data.slice(11, 11 + n);
+      if ((crc32(ch) & 0xffff) === rd(data, 9, 2)) got.set(i, ch); }
+    if (!total) throw new Error('No crown found in this image. Open a crown GIF saved from this page.');
+    if (got.size !== total) throw new Error(`Only ${got.size} of ${total} frames read. Open the original GIF, not a screenshot.`);
+    const blob = Uint8Array.from([...Array(total).keys()].flatMap((i) => [...got.get(i)]));
+    const n = rd(blob, 0, 4), z = blob.slice(8, 8 + n);
+    if (crc32(z) !== rd(blob, 4, 4)) throw new Error('The crown is damaged: its checksum does not match.');
+    return JSON.parse(new TextDecoder().decode(await inflate(z)));
+  }
+
+  return { seal, open, W };
+})();
+if (typeof module !== 'undefined') module.exports = CROWN;
+
+const TODAY={"v": 3, "king": "Leevzo the Lucky", "at": "2026-09-24T13:30-06:00", "one": "Open your crown to load your kingdom.", "spires": [{"name": "Dawn", "deeds": [{"w": "Open", "d": ""}]}, {"name": "Day", "deeds": [{"w": "Your", "d": ""}]}, {"name": "Road", "deeds": [{"w": "Crown", "d": ""}]}], "law": "The harder the task, the more story it gets.", "grail": "The crown is the glyph.", "overbook": ""};
+const $ = (id) => document.getElementById(id);
+const DRAFT = 'monomyth.crown.v1';
+const SKIP = new Set(['monomyth.crown.v1', 'monomyth.glyph.history.v1', 'monomyth.focus.byok.v1', 'monomyth.byok.v1', 'monomyth.kingdom.pass', 'monomyth.focus.seeded.v1', 'monomyth.focus.gate.v1', 'monomyth.vault.v1', 'monomyth.focus.screen', 'monomyth.courier.v1', 'monomyth.focus.snapshot.v1']);
+let FILE = null;
+function swordKeys() { const o = {}; try { Object.keys(localStorage).filter((k) => k.startsWith('monomyth.') && !SKIP.has(k)).sort().forEach((k) => { o[k] = localStorage.getItem(k) || ''; }); } catch (e) {} return o; }
+function mergeRecord(cur, inc) { try { const a = JSON.parse(cur), b = JSON.parse(inc), rec = (e) => e && typeof e === 'object' && typeof e.at === 'string';
+  if (Array.isArray(a) && Array.isArray(b) && a.length && a.every(rec) && b.every(rec)) { const seen = new Set(), out = []; a.concat(b).forEach((e) => { const k = JSON.stringify(e); if (!seen.has(k)) { seen.add(k); out.push(e); } }); out.sort((x, y) => (x.at < y.at ? -1 : x.at > y.at ? 1 : 0)); return JSON.stringify(out); } } catch (e) {} return inc; }
+function applyKeys(keys) { let n = 0; for (const [k, v] of Object.entries(keys || {})) { if (!k.startsWith('monomyth.') || SKIP.has(k)) continue; try { localStorage.setItem(k, mergeRecord(localStorage.getItem(k), String(v))); n++; } catch (e) {} } return n; }
+let K = null, sealing = false, url = null;
+
+const stamp = () => { const d = new Date(), p = (n) => String(n).padStart(2, '0'), o = -d.getTimezoneOffset();
+  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}${o >= 0 ? '+' : '-'}${p(Math.floor(Math.abs(o) / 60))}:${p(Math.abs(o) % 60)}`; };
+const say = (t, kind = '') => { const s = $('status'); s.textContent = t; s.className = 'status ' + kind; };
+const keep = () => { try { localStorage.setItem(DRAFT, JSON.stringify(K)); } catch (e) {} };
+
+function render() {
+  $('one').value = K.one; $('king').value = K.king; $('law').value = K.law || '';
+  $('overbook').value = K.overbook || ''; count();
+  const host = $('spires'); host.textContent = '';
+  K.spires.forEach((s, si) => {
+    const el = document.createElement('div'); el.className = 'spire';
+    const nm = document.createElement('input'); nm.type = 'text'; nm.className = 'nm'; nm.maxLength = 7; nm.value = s.name; nm.id = `sp${si}`;
+    nm.setAttribute('aria-label', `Spire ${si + 1} name`); nm.oninput = () => { s.name = nm.value; keep(); };
+    el.append(nm);
+    s.deeds.forEach((d, di) => {
+      const row = document.createElement('div'); row.className = 'deed' + (d.done ? ' is-done' : '');
+      const c = document.createElement('input'); c.type = 'checkbox'; c.className = 'chk'; c.checked = !!d.done; c.id = `dn${si}-${di}`;
+      c.setAttribute('aria-label', `Done: ${d.w}`); c.onchange = () => { d.done = c.checked; row.classList.toggle('is-done', c.checked); keep(); };
+      const w = document.createElement('input'); w.type = 'text'; w.className = 'w'; w.maxLength = 7; w.value = d.w; w.id = `w${si}-${di}`;
+      w.setAttribute('aria-label', 'Deed word'); w.oninput = () => { d.w = w.value; keep(); };
+      const x = document.createElement('button'); x.type = 'button'; x.className = 'x'; x.textContent = '×'; x.setAttribute('aria-label', `Remove ${d.w}`);
+      x.onclick = () => { s.deeds.splice(di, 1); keep(); render(); };
+      const t = document.createElement('textarea'); t.value = d.d || ''; t.rows = 2; t.id = `d${si}-${di}`;
+      t.setAttribute('aria-label', `What ${d.w} means`); t.oninput = () => { d.d = t.value; keep(); };
+      row.append(c, w, x, t); el.append(row);
+    });
+    const add = document.createElement('button'); add.type = 'button'; add.className = 'add'; add.textContent = '+ Add a deed';
+    add.onclick = () => { s.deeds.push({ w: 'NEW', d: '' }); keep(); render(); $(`w${si}-${s.deeds.length - 1}`).select(); };
+    el.append(add); host.append(el);
+  });
+}
+function count() { const n = new TextEncoder().encode($('overbook').value).length; $('obc').textContent = n ? `${(n / 1024).toFixed(1)} KB` : 'empty'; }
+$('one').oninput = (e) => { K.one = e.target.value; keep(); };
+$('king').oninput = (e) => { K.king = e.target.value; keep(); };
+$('law').oninput = (e) => { K.law = e.target.value; keep(); };
+$('overbook').oninput = (e) => { K.overbook = e.target.value; count(); keep(); };
+
+function show(bytes) { if (url) URL.revokeObjectURL(url); const png = bytes[0] === 137 && bytes[1] === 80;
+  url = URL.createObjectURL(new Blob([bytes], { type: png ? 'image/png' : 'image/gif' })); $('crown').src = url; }
+
+async function seal(announce = true) {
+  if (sealing) return; sealing = true; say('Sealing your crown…');
+  try {
+    K.at = stamp(); K.v = 3; K.keys = swordKeys();
+    const clean = { ...K, spires: K.spires.map((s) => ({ ...s, name: (s.name || '').trim() || '·', deeds: s.deeds.filter((d) => d.w.trim()) })) };
+    const { png: gif } = await CROWN.seal(clean); show(gif); keep();
+    FILE = new File([gif], `crown-${K.at.slice(0, 10)}-${K.at.slice(11, 16).replace(':', '')}.png`, { type: 'image/png' }); $('save').hidden = false;
+    if (announce) say(`Sealed at ${K.at.slice(11, 16)}. ${(gif.length / 1024).toFixed(0)} KB. Press and hold the crown to save it.`, 'ok'); else say('');
+  } catch (e) { say('Could not seal: ' + e.message, 'err'); }
+  sealing = false;
+}
+$('seal').onclick = () => seal(true);
+$('save').onclick = async () => { if (!FILE) return;
+  if (navigator.canShare && navigator.canShare({ files: [FILE] })) { try { await navigator.share({ files: [FILE], title: FILE.name }); } catch (e) {} return; }
+  const a = document.createElement('a'); a.href = url; a.download = FILE.name; document.body.append(a); a.click(); a.remove(); };
+
+$('file').onchange = async (e) => {
+  const f = e.target.files[0]; if (!f) return; say(`Reading ${f.name}…`);
+  try {
+    const bytes = new Uint8Array(await f.arrayBuffer());
+    if (!((bytes[0] === 71 && bytes[1] === 73) || (bytes[0] === 137 && bytes[1] === 80))) throw new Error('That file is not a crown PNG. If your phone converted it to a JPEG, save the crown to Files instead and open it from there.');
+    const k = await CROWN.open(bytes);
+    if (!k.spires?.[0]?.deeds) throw new Error('This crown is from an older version (v1) that this page cannot edit.');
+    const n = applyKeys(k.keys); delete k.keys; K = k; show(bytes); render(); keep();
+    say(`Opened ${K.king}'s kingdom, sealed ${K.at.slice(0, 10)} at ${K.at.slice(11, 16)}.` + (n ? ` ${n} Sword records written into this Monomyth.` : ''), 'ok');
+  } catch (err) { say(err.message, 'err'); }
+  e.target.value = '';
+};
+
+(function boot() {
+  try { const d = JSON.parse(localStorage.getItem(DRAFT) || 'null'); if (d && d.spires) K = d; } catch (e) {}
+  if (!K) K = structuredClone(TODAY);
+  render(); seal(false);
+})();
+</script></body></html>
