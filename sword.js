@@ -286,17 +286,32 @@ if(typeof window !== 'undefined') window.SWORD = SWORD;
 
 /* Orv's idle, built in from orv/orv.json — the mythglyph's anchor. Never redrawn. */
 const ORV_SPRITE = {"w":41,"h":50,"pal":{".":null,"a":"#141733","b":"#0c1629","c":"#0c131c","d":"#d84446","e":"#ea6857","f":"#dfd1bd","g":"#393f52","h":"#772239","i":"#d73d45","j":"#cd3e52","k":"#55676c","l":"#0b1631","m":"#733250","n":"#b69574","o":"#a92745","p":"#962545","q":"#b74545","r":"#4a2c3a","s":"#576b72","t":"#e97160","u":"#b8a79b","v":"#a72339","w":"#b29e9b","x":"#363c4d","y":"#741d41","z":"#32142c","A":"#160b27","B":"#5b3647","C":"#573439","D":"#763848","E":"#89233b","F":"#a6212d","G":"#e54447","H":"#971c37","!":"#FFD98A","@":"#FFF4CE"},"frames":[["..........aD.............na..............","..........kn.......A.....naB.............","..........rBb..ltaebtaaaanna.............","..........knaazbtdeedBejaDnb.............","..........BDnneFietetGdqBqDa.............","..........DDnnediGtidddteDka.............","..........bDDCdedzAwwwwljedb.............","..........aiGGdGFwuffffuaGDD.............","..........BbEqiHbffffffffodb.............","..........mEHiHwuffaaaaffwoG.............",".........aaqddzwffaaaaaafwaG.............",".........azEiibwffaaaaaaufaia............",".........boidiawffaaaaaawfljtb...........","........aEEpGiawffaaaaAAfuljba...........",".........bpipizwwffaaaAffwmiEb...........",".........bEEodo.suwffffuwfoeaa....wfab...",".........bzEtetobwwuuuuwspGvA....anqqb...","..........yayyiovpaBBBrrpjdAl...a.aabc...","..........bbbyEEoEpEEppodipA...aucaBrcb..","...........abyrodojjjjiHGvba..acqclrcff..","...........abyrodojjjjiHGvba..acqclrcff..","...........bDrBrlrAihdpybc....bDzayxqcca.","..........larmnqqyyaazyDDk....bzDhzbznfza","........aaDDkaqsccyyyypDbnca...AhobylDzag","......bbknsDnDqnacyEEvmnlgqb....zhyopryb.",".....bcrnaqnmgaBBcppEyrcmakqxaabfDcyyaa..",".....cnqBnqsBxnqqcjjHhokqcpAqAcnnbCbba...","...bcarcnzaBcBsBBcteeeokmbbnancnDDCCC....","...azzcyDDgDkBsqqceeeFekBgaBhnzqDDCqa....","...qDnbcADgagDtqqcdeeeenqCsBycqbDDzb.....","...lccDazBbarBsmDqteeienmksBhcrcara......","..aCnncDbzaarmsmDDqeejeamkakyyDzBDk......","..aqenCCa.bgyqnqrDeejHtbqqb.aaabbb.......",".bzqeqDD..agmDsqnFhveEqaDDb..............",".bDnfcaa..rDqnwDssacoabbkqqa.............",".DDnqDrb..baznnqnskxskbbnqb..............","aaaaaqDab.bgxxaaakskskkxxgsb.............","aFiiivlDb.axsagxxkksskkkssksa............","bnDfDaaDa.gasskkskxggbgxkgwwwc...........","anDfDbabbbaxagksggxgagggbwwkab...........",".bDzqC...abbwwwagba.agbkkgjdee...........",".aCDDD...aFFoakwab...akkaHedFd...........","..aabb..aaeeeorwk....akrEoijol...........",".........azeejvbx....bahhhvAbs...........",".........aBoihvaa....ayyhhyl.............","........aphih.a.......byqpidbb...........","........Fbjihaa.......gyhircBl...........",".......aDrCDza.........acrrmrrc..........",".......bDrDCra.........abrrraac..........",".......bbazaa............................"],["..........kn.......A.....naB.............","..........rBb..ltaebtaaaanna.............","..........knaazbtdeedBejaDnb.............","..........BDnneFietetGdqBqDa.............","..........DDnnediGtidddteDka.............","..........bDDCdedzAwwwwljedb.............","..........aiGGdGFwuffffuaGDD.............","..........BbEqiHbffffffffodb.............","..........mEHiHwuffaaaaffwoG.............",".........aaqddzwffaaaaaafwaG.............",".........azEiibwffaaaaaaufaia............",".........boidiawffaaaaaawfljtb...........","........aEEpGiawffaaaaAAfuljba...........",".........bpipizwwffaaaAffwmiEb...........",".........bEEodo.suwffffuwfoeaa....wfab...",".........bzEtetobwwuuuuwspGvA....anqqb...","..........yayyiovpaBBBrrpjdAl...a.aabc...","..........bbbyEEoEpEEppodipA...aucaBrcb..","...........abyrodojjjjiHGvba..acqclrcff..","...........abyrodojjjjiHGvba..acqclrcff..","...........bDrBrlrAihdpybc....bDzayxqcca.","..........larmnqqyyaazyDDk....bzDhzbznfza","........aaDDkaqsccyyyypDbnca...AhobylDzag","......bbknsDnDqnacyEEvmnlgqb....zhyopryb.",".....bcrnaqnmgaBBcppEyrcmakqxaabfDcyyaa..",".....cnqBnqsBxnqqcjjHhokqcpAqAcnnbCbba...","...bcarcnzaBcBsBBcteeeokmbbnancnDDCCC....","...azzcyDDgDkBsqqceeeFekBgaBhnzqDDCqa....","...qDnbcADgagDtqqcdeeeenqCsBycqbDDzb.....","...lccDazBbarBsmDqteeienmksBhcrcara......","..aCnncDbzaarmsmDDqeejeamkakyyDzBDk......","..aqenCCa.bgyqnqrDeejHtbqqb.aaabbb.......",".bzqeqDD..agmDsqnFhveEqaDDb..............",".bDnfcaa..rDqnwDssacoabbkqqa.............",".DDnqDrb..baznnqnskxskbbnqb..............","aaaaaqDab.bgxxaaakskskkxxgsb.............","aFiiivlDb.axsagxxkksskkkssksa............","bnDfDaaDa.gasskkskxggbgxkgwwwc...........","anDfDbabbbaxagksggxgagggbwwkab...........",".bDzqC...abbwwwagba.agbkkgjdee...........",".aCDDD...aFFoakwab...akkaHedFd...........","..aabb..aaeeeorwk....akrEoijol...........",".........azeejvbx....bahhhvAbs...........",".........aBoihvaa....ayyhhyl.............","........aphih.a.......byqpidbb...........","........Fbjihaa.......gyhircBl...........",".......aDrCDza.........acrrmrrc..........",".......bDrDCra.........abrrraac..........",".......bbazaa............................","........................................."],["..........aD.............na..............","..........kn.......A.....naB.............","..........rBb..ltaebtaaaanna.............","..........knaazbtdeedBejaDnb.............","..........BDnneFietetGdqBqDa.............","..........DDnnediGtidddteDka.............","..........bDDCdedzAwwwwljedb.............","..........aiGGdGFwuffffuaGDD.............","..........BbEqiHbffffffffodb.............","..........mEHiHwuffaaaaffwoG.............",".........aaqddzwffaaaaaafwaG.............",".........azEiibwffaaaaaaufaia............",".........boidiawffaaaaaawfljtb...........","........aEEpGiawffaaaaAAfuljba...........",".........bpipizwwffaaaAffwmiEb...........",".........bEEodo.suwffffuwfoeaa....wfab...",".........bzEtetobwwuuuuwspGvA....anqqb...","..........yayyiovpaBBBrrpjdAl...a.aabc...","..........bbbyEEoEpEEppodipA...aucaBrcb..","...........abyrodojjjjiHGvba..acqclrcff..","...........abyrodojjjjiHGvba..acqclrcff..","...........bDrBrlrAihdpybc....bDzayxqcca!","..........larmnqqyyaazyDDk....bzDhzbznfza","........aaDDkaqsccyyyypDbnca...AhobylDzag","......bbknsDnDqnacyEEvmnlgqb....zhyopryb.",".....bcrnaqnmgaBBcppEyrcmakqxaabfDcyyaa..",".....cnqBnqsBxnqqcjjHhokqcpAqAcnnbCbba.!.","...bcarcnzaBcBsBBcteeeokmbbnancnDDCCC.!.@","...azzcyDDgDkBsqqceeeFekBgaBhnzqDDCqa....","...qDnbcADgagDtqqcdeeeenqCsBycqbDDzb.....","...lccDazBbarBsmDqteeienmksBhcrcara......","..aCnncDbzaarmsmDDqeejeamkakyyDzBDk......","..aqenCCa.bgyqnqrDeejHtbqqb.aaabbb.......",".bzqeqDD..agmDsqnFhveEqaDDb..............",".bDnfcaa..rDqnwDssacoabbkqqa.............",".DDnqDrb..baznnqnskxskbbnqb..............","aaaaaqDab.bgxxaaakskskkxxgsb.............","aFiiivlDb.axsagxxkksskkkssksa............","bnDfDaaDa.gasskkskxggbgxkgwwwc...........","anDfDbabbbaxagksggxgagggbwwkab...........",".bDzqC...abbwwwagba.agbkkgjdee...........",".aCDDD...aFFoakwab...akkaHedFd...........","..aabb..aaeeeorwk....akrEoijol...........",".........azeejvbx....bahhhvAbs...........",".........aBoihvaa....ayyhhyl.............","........aphih.a.......byqpidbb...........","........Fbjihaa.......gyhircBl...........",".......aDrCDza.........acrrmrrc..........",".......bDrDCra.........abrrraac..........",".......bbazaa............................"],["..........aD.............na..............","..........kn.......A.....naB.............","..........rBb..ltaebtaaaanna.............","..........knaazbtdeedBejaDnb.............","..........BDnneFietetGdqBqDa.............","..........DDnnediGtidddteDka.............","..........bDDCdedzAwwwwljedb.............","..........aiGGdGFwuffffuaGDD.............","..........BbEqiHbffffffffodb.............","..........mEHiHwuffaaaaffwoG.............",".........aaqddzwffaaaaaafwaG.............",".........azEiibwffaaaaaaufaia............",".........boidiawffaaaaaawfljtb...........","........aEEpGiawffaaaaAAfuljba...........",".........bpipizwwffaaaAffwmiEb...........",".........bEEodo.suwffffuwfoeaa....wfab...",".........bzEtetobwwuuuuwspGvA....anqqb..!","..........yayyiovpaBBBrrpjdAl...a.aabc!@.","..........bbbyEEoEpEEppodipA...aucaBrcb..","...........abyrodojjjjiHGvba..acqclrcff..","...........abyrodojjjjiHGvba..acqclrcff..","...........bDrBrlrAihdpybc....bDzayxqcca.","..........larmnqqyyaazyDDk....bzDhzbznfza","........aaDDkaqsccyyyypDbnca...AhobylDzag","......bbknsDnDqnacyEEvmnlgqb....zhyopryb.",".....bcrnaqnmgaBBcppEyrcmakqxaabfDcyyaa..",".....cnqBnqsBxnqqcjjHhokqcpAqAcnnbCbba..@","...bcarcnzaBcBsBBcteeeokmbbnancnDDCCC....","...azzcyDDgDkBsqqceeeFekBgaBhnzqDDCqa.@..","...qDnbcADgagDtqqcdeeeenqCsBycqbDDzb.....","...lccDazBbarBsmDqteeienmksBhcrcara......","..aCnncDbzaarmsmDDqeejeamkakyyDzBDk......","..aqenCCa.bgyqnqrDeejHtbqqb.aaabbb.......",".bzqeqDD..agmDsqnFhveEqaDDb..............",".bDnfcaa..rDqnwDssacoabbkqqa.............",".DDnqDrb..baznnqnskxskbbnqb..............","aaaaaqDab.bgxxaaakskskkxxgsb.............","aFiiivlDb.axsagxxkksskkkssksa............","bnDfDaaDa.gasskkskxggbgxkgwwwc...........","anDfDbabbbaxagksggxgagggbwwkab...........",".bDzqC...abbwwwagba.agbkkgjdee...........",".aCDDD...aFFoakwab...akkaHedFd...........","..aabb..aaeeeorwk....akrEoijol...........",".........azeejvbx....bahhhvAbs...........",".........aBoihvaa....ayyhhyl.............","........aphih.a.......byqpidbb...........","........Fbjihaa.......gyhircBl...........",".......aDrCDza.........acrrmrrc..........",".......bDrDCra.........abrrraac..........",".......bbazaa............................"]]};
+/* the current Orv, built in from orv/orv2.json — the v2 mythglyph (the ring in his eye). Never redrawn. */
+const ORV2_SPRITE = {"w":41,"h":50,"pal":{".":null,"a":"#141733","b":"#0c1629","c":"#0c131c","d":"#d84446","e":"#ea6857","f":"#dfd1bd","g":"#393f52","h":"#772239","i":"#d73d45","j":"#cd3e52","k":"#55676c","l":"#0b1631","m":"#733250","n":"#b69574","o":"#a92745","p":"#962545","q":"#b74545","r":"#4a2c3a","s":"#576b72","t":"#e97160","u":"#b8a79b","v":"#a72339","w":"#b29e9b","x":"#363c4d","y":"#741d41","z":"#32142c","A":"#160b27","B":"#5b3647","C":"#573439","D":"#763848","E":"#89233b","F":"#a6212d","G":"#e54447","H":"#971c37","!":"#FFD98A","@":"#FFF4CE","R":"#CC840E"},"frames":[["..........aD.............na..............","..........kn.......A.....naB.............","..........rBb..ltaebtaaaanna.............","..........knaazbtdeedBejaDnb.............","..........BDnneFietetGdqBqDa.............","..........DDnnediGtidddteDka.............","..........bDDCdedzARRRRljedb.............","..........aiGGdGFRRffRRRaGDD.............","..........BbEqiHbRfffRffRodb.............","..........mEHiHRRRfaaaafRRoG.............",".........aaqddzRffaaaaaafRaG.............",".........azEiibRffaaaaaauRaia............",".........boidiaRffaaaaaawRljtb...........","........aEEpGiaRfRaaaaAARRljba...........",".........bpipizRRRfaaaAffRmiEb...........",".........bEEodo.sRwffRfRRRoeaa....wfab...",".........bzEtetobRRRRRRRspGvA....anqqb...","..........yayyiovpaBBBrrpjdAl...a.aabc...","..........bbbyEEoEpEEppodipA...aucaBrcb..","...........abyrodojjjjiHGvba..acqclrcff..","...........abyrodojjjjiHGvba..acqclrcff..","...........bDrBrlrAihdpybc....bDzayxqcca.","..........larmnqqyyaazyDDk....bzDhzbznfza","........aaDDkaqsccyyyypDbnca...AhobylDzag","......bbknsDnDqnacyEEvmnlgqb....zhyopryb.",".....bcrnaqnmgaBBcppEyrcmakqxaabfDcyyaa..",".....cnqBnqsBxnqqcjjHhokqcpAqAcnnbCbba...","...bcarcnzaBcBsBBcteeeokmbbnancnDDCCC....","...azzcyDDgDkBsqqceeeFekBgaBhnzqDDCqa....","...qDnbcADgagDtqqcdeeeenqCsBycqbDDzb.....","...lccDazBbarBsmDqteeienmksBhcrcara......","..aCnncDbzaarmsmDDqeejeamkakyyDzBDk......","..aqenCCa.bgyqnqrDeejHtbqqb.aaabbb.......",".bzqeqDD..agmDsqnFhveEqaDDb..............",".bDnfcaa..rDqnwDssacoabbkqqa.............",".DDnqDrb..baznnqnskxskbbnqb..............","aaaaaqDab.bgxxaaakskskkxxgsb.............","aFiiivlDb.axsagxxkksskkkssksa............","bnDfDaaDa.gasskkskxggbgxkgwwwc...........","anDfDbabbbaxagksggxgagggbwwkab...........",".bDzqC...abbwwwagba.agbkkgjdee...........",".aCDDD...aFFoakwab...akkaHedFd...........","..aabb..aaeeeorwk....akrEoijol...........",".........azeejvbx....bahhhvAbs...........",".........aBoihvaa....ayyhhyl.............","........aphih.a.......byqpidbb...........","........Fbjihaa.......gyhircBl...........",".......aDrCDza.........acrrmrrc..........",".......bDrDCra.........abrrraac..........",".......bbazaa............................"],["..........kn.......A.....naB.............","..........rBb..ltaebtaaaanna.............","..........knaazbtdeedBejaDnb.............","..........BDnneFietetGdqBqDa.............","..........DDnnediGtidddteDka.............","..........bDDCdedzARRRRljedb.............","..........aiGGdGFRRffRRRaGDD.............","..........BbEqiHbRfffRffRodb.............","..........mEHiHRRRfaaaafRRoG.............",".........aaqddzRffaaaaaafRaG.............",".........azEiibRffaaaaaauRaia............",".........boidiaRffaaaaaawRljtb...........","........aEEpGiaRfRaaaaAARRljba...........",".........bpipizRRRfaaaAffRmiEb...........",".........bEEodo.sRwffRfRRRoeaa....wfab...",".........bzEtetobRRRRRRRspGvA....anqqb...","..........yayyiovpaBBBrrpjdAl...a.aabc...","..........bbbyEEoEpEEppodipA...aucaBrcb..","...........abyrodojjjjiHGvba..acqclrcff..","...........abyrodojjjjiHGvba..acqclrcff..","...........bDrBrlrAihdpybc....bDzayxqcca.","..........larmnqqyyaazyDDk....bzDhzbznfza","........aaDDkaqsccyyyypDbnca...AhobylDzag","......bbknsDnDqnacyEEvmnlgqb....zhyopryb.",".....bcrnaqnmgaBBcppEyrcmakqxaabfDcyyaa..",".....cnqBnqsBxnqqcjjHhokqcpAqAcnnbCbba...","...bcarcnzaBcBsBBcteeeokmbbnancnDDCCC....","...azzcyDDgDkBsqqceeeFekBgaBhnzqDDCqa....","...qDnbcADgagDtqqcdeeeenqCsBycqbDDzb.....","...lccDazBbarBsmDqteeienmksBhcrcara......","..aCnncDbzaarmsmDDqeejeamkakyyDzBDk......","..aqenCCa.bgyqnqrDeejHtbqqb.aaabbb.......",".bzqeqDD..agmDsqnFhveEqaDDb..............",".bDnfcaa..rDqnwDssacoabbkqqa.............",".DDnqDrb..baznnqnskxskbbnqb..............","aaaaaqDab.bgxxaaakskskkxxgsb.............","aFiiivlDb.axsagxxkksskkkssksa............","bnDfDaaDa.gasskkskxggbgxkgwwwc...........","anDfDbabbbaxagksggxgagggbwwkab...........",".bDzqC...abbwwwagba.agbkkgjdee...........",".aCDDD...aFFoakwab...akkaHedFd...........","..aabb..aaeeeorwk....akrEoijol...........",".........azeejvbx....bahhhvAbs...........",".........aBoihvaa....ayyhhyl.............","........aphih.a.......byqpidbb...........","........Fbjihaa.......gyhircBl...........",".......aDrCDza.........acrrmrrc..........",".......bDrDCra.........abrrraac..........",".......bbazaa............................","........................................."],["..........aD.............na..............","..........kn.......A.....naB.............","..........rBb..ltaebtaaaanna.............","..........knaazbtdeedBejaDnb.............","..........BDnneFietetGdqBqDa.............","..........DDnnediGtidddteDka.............","..........bDDCdedzARRRRljedb.............","..........aiGGdGFRRffRRRaGDD.............","..........BbEqiHbRfffRffRodb.............","..........mEHiHRRRfaaaafRRoG.............",".........aaqddzRffaaaaaafRaG.............",".........azEiibRffaaaaaauRaia............",".........boidiaRffaaaaaawRljtb...........","........aEEpGiaRfRaaaaAARRljba...........",".........bpipizRRRfaaaAffRmiEb...........",".........bEEodo.sRwffRfRRRoeaa....wfab...",".........bzEtetobRRRRRRRspGvA....anqqb...","..........yayyiovpaBBBrrpjdAl...a.aabc...","..........bbbyEEoEpEEppodipA...aucaBrcb..","...........abyrodojjjjiHGvba..acqclrcff..","...........abyrodojjjjiHGvba..acqclrcff..","...........bDrBrlrAihdpybc....bDzayxqcca!","..........larmnqqyyaazyDDk....bzDhzbznfza","........aaDDkaqsccyyyypDbnca...AhobylDzag","......bbknsDnDqnacyEEvmnlgqb....zhyopryb.",".....bcrnaqnmgaBBcppEyrcmakqxaabfDcyyaa..",".....cnqBnqsBxnqqcjjHhokqcpAqAcnnbCbba.!.","...bcarcnzaBcBsBBcteeeokmbbnancnDDCCC.!.@","...azzcyDDgDkBsqqceeeFekBgaBhnzqDDCqa....","...qDnbcADgagDtqqcdeeeenqCsBycqbDDzb.....","...lccDazBbarBsmDqteeienmksBhcrcara......","..aCnncDbzaarmsmDDqeejeamkakyyDzBDk......","..aqenCCa.bgyqnqrDeejHtbqqb.aaabbb.......",".bzqeqDD..agmDsqnFhveEqaDDb..............",".bDnfcaa..rDqnwDssacoabbkqqa.............",".DDnqDrb..baznnqnskxskbbnqb..............","aaaaaqDab.bgxxaaakskskkxxgsb.............","aFiiivlDb.axsagxxkksskkkssksa............","bnDfDaaDa.gasskkskxggbgxkgwwwc...........","anDfDbabbbaxagksggxgagggbwwkab...........",".bDzqC...abbwwwagba.agbkkgjdee...........",".aCDDD...aFFoakwab...akkaHedFd...........","..aabb..aaeeeorwk....akrEoijol...........",".........azeejvbx....bahhhvAbs...........",".........aBoihvaa....ayyhhyl.............","........aphih.a.......byqpidbb...........","........Fbjihaa.......gyhircBl...........",".......aDrCDza.........acrrmrrc..........",".......bDrDCra.........abrrraac..........",".......bbazaa............................"],["..........aD.............na..............","..........kn.......A.....naB.............","..........rBb..ltaebtaaaanna.............","..........knaazbtdeedBejaDnb.............","..........BDnneFietetGdqBqDa.............","..........DDnnediGtidddteDka.............","..........bDDCdedzARRRRljedb.............","..........aiGGdGFRRffRRRaGDD.............","..........BbEqiHbRfffRffRodb.............","..........mEHiHRRRfaaaafRRoG.............",".........aaqddzRffaaaaaafRaG.............",".........azEiibRffaaaaaauRaia............",".........boidiaRffaaaaaawRljtb...........","........aEEpGiaRfRaaaaAARRljba...........",".........bpipizRRRfaaaAffRmiEb...........",".........bEEodo.sRwffRfRRRoeaa....wfab...",".........bzEtetobRRRRRRRspGvA....anqqb..!","..........yayyiovpaBBBrrpjdAl...a.aabc!@.","..........bbbyEEoEpEEppodipA...aucaBrcb..","...........abyrodojjjjiHGvba..acqclrcff..","...........abyrodojjjjiHGvba..acqclrcff..","...........bDrBrlrAihdpybc....bDzayxqcca.","..........larmnqqyyaazyDDk....bzDhzbznfza","........aaDDkaqsccyyyypDbnca...AhobylDzag","......bbknsDnDqnacyEEvmnlgqb....zhyopryb.",".....bcrnaqnmgaBBcppEyrcmakqxaabfDcyyaa..",".....cnqBnqsBxnqqcjjHhokqcpAqAcnnbCbba..@","...bcarcnzaBcBsBBcteeeokmbbnancnDDCCC....","...azzcyDDgDkBsqqceeeFekBgaBhnzqDDCqa.@..","...qDnbcADgagDtqqcdeeeenqCsBycqbDDzb.....","...lccDazBbarBsmDqteeienmksBhcrcara......","..aCnncDbzaarmsmDDqeejeamkakyyDzBDk......","..aqenCCa.bgyqnqrDeejHtbqqb.aaabbb.......",".bzqeqDD..agmDsqnFhveEqaDDb..............",".bDnfcaa..rDqnwDssacoabbkqqa.............",".DDnqDrb..baznnqnskxskbbnqb..............","aaaaaqDab.bgxxaaakskskkxxgsb.............","aFiiivlDb.axsagxxkksskkkssksa............","bnDfDaaDa.gasskkskxggbgxkgwwwc...........","anDfDbabbbaxagksggxgagggbwwkab...........",".bDzqC...abbwwwagba.agbkkgjdee...........",".aCDDD...aFFoakwab...akkaHedFd...........","..aabb..aaeeeorwk....akrEoijol...........",".........azeejvbx....bahhhvAbs...........",".........aBoihvaa....ayyhhyl.............","........aphih.a.......byqpidbb...........","........Fbjihaa.......gyhircBl...........",".......aDrCDza.........acrrmrrc..........",".......bDrDCra.........abrrraac..........",".......bbazaa............................"]],"k":4,"step":0.04,"variants":{"d":["#d84446","#d43335","#dc5557","#df6667"],"e":["#ea6857","#e85845","#ec7869","#ef897b"],"f":["#dfd1bd","#d8c7af","#e6dbcb","#ece4d8"],"g":["#393f52","#313646","#41485e","#4a516a"],"h":["#772239","#671d31","#872741","#972b48"],"i":["#d73d45","#d42c35","#da4e55","#de5f65"],"j":["#cd3e52","#c43347","#d14e61","#d55e6f"],"k":["#55676c","#4c5c61","#5e7277","#677d83"],"m":["#733250","#652c46","#81385a","#8f3e64"],"n":["#b69574","#af8b67","#bd9f81","#c4a98f"],"o":["#a92745","#98233e","#ba2b4c","#ca2f53"],"p":["#962545","#86213d","#a6294d","#b72d54"],"q":["#b74545","#a83f3f","#be5252","#c46161"],"r":["#4a2c3a","#3d2430","#573444","#643b4e"],"s":["#576b72","#4e6066","#60767e","#698189"],"t":["#e97160","#e7614e","#eb8172","#ee9184"],"u":["#b8a79b","#b09d8f","#c0b1a7","#c9bcb3"],"v":["#a72339","#961f33","#b8273f","#c92a45"],"w":["#b29e9b","#a9938f","#bba9a7","#c4b4b2"],"x":["#363c4d","#2e3341","#3e4559","#474f65"],"y":["#741d41","#641938","#84214a","#952553"],"z":["#32142c","#411a39","#4f2046","#5e2552"],"B":["#5b3647","#4e2e3d","#683e51","#75455b"],"C":["#573439","#4a2c31","#643c41","#71434a"],"D":["#763848","#683140","#843f50","#924559"],"E":["#89233b","#791f34","#992742","#a92b49"],"F":["#a6212d","#951e28","#b72432","#c82836"],"G":["#e54447","#e33235","#e75659","#ea686a"],"H":["#971c37","#861931","#a81f3d","#b92244"],"!":["#ffd98a","#ffd276","#ffe09e","#ffe6b3"],"@":["#fff4ce","#ffeba5","#ffefba","#fff9e2"]}};
 /* the mythglyph — _glyph.js */
 /* ═══════════════════════════════════════════════════════════════════════
    THE MYTHGLYPH — the kingdom as a picture of Orv. The picture IS the save.
-   Each GIF frame is one of Orv's four idle poses (41x50, 4 px a cell, 2 white
-   cells of margin). The dark outline stays black: the anchor the reader locks
-   onto. Every other opaque pixel carries a base-23 digit (a byte = two cells,
-   hi = b/23, lo = b%23) in one of 23 hues. Frame i = pose i%4 = one plain chunk:
-   'MG' 1 i(2) n(2) len(2) payload CRC-16/CCITT-FALSE(2), then the rainbow ruler
-   0..22 in the cells left over. The chunks join into one zlib stream of
-   {v:1, kind:'mythglyph', at, keys}. glyph.py on the Mac is the same codec,
-   bit for bit. Needs: ORV_SPRITE (built in from orv/orv.json), pako, omggif.
+   v2 (the default writer): the current Orv (orv/orv2.json, the bronze ring in
+   his eye), moving like pixel art — frame i wears idle pose i%4, whole, never
+   stretched; 4 px a cell, 2 white cells of margin, 180x216, 180 ms a frame.
+     anchors (never data): the dark outline tones, each its OWN navy (relative
+       luminance < 0.012: the reader finds him by their bounding box), the
+       bronze ring 'R' (the eye's finder) and the pupil (the dark cells inside it).
+     the eye: every other cell inside the ring = one of the 23 (hue 37+k·360/23,
+       S 100, L 54); a byte = two cells, hi = b/23, lo = b%23.
+     the body: every other opaque cell keeps its own tone but wears one of K=4
+       lightness variants of it (orv2.json 'variants', variant 0 = his own
+       colour): 2 bits a cell.
+     order: 'MG' 2 i(2) n(2) len(2) payload CRC-16/CCITT-FALSE(2) — the first
+       floor(eye/2) bytes in the eye (row-major), the rest one bit stream,
+       most significant bit of each byte first, 2 bits a body cell (row-major),
+       the first bit the digit's high bit. After the payload: eye = the 23 in
+       order (cell p wears p%23), body = variant 0 (his untouched colour).
+   v1 (still read, exactly as before): orv/orv.json, black outline, every other
+   cell one of the 23. 'MG' 1 i n len payload CRC, the rainbow ruler after.
+   The chunks join into one zlib stream of {v:1, kind:'mythglyph', at, keys}.
+   glyph.py on the Mac is the same codec, bit for bit.
+   Needs: ORV_SPRITE (orv.json), ORV2_SPRITE (orv2.json), pako, omggif.
    ═══════════════════════════════════════════════════════════════════════ */
 const GLYPH = (function(){
   const CELL = 4, MARGIN = 2, OUTLINE_LUM = 0.012, VERSION = 1, HEAD = 9, TAIL = 2, DELAY_CS = 25;
@@ -385,8 +400,8 @@ const GLYPH = (function(){
     return p;
   }
 
-  /* payload (zlib bytes) → GIF bytes */
-  function encodePayload(payload){
+  /* v1 writer, kept so the old glyphs can still be made for the proofs */
+  function encodePayload1(payload){
     const S = sprite(), chunks = plan(payload), n = chunks.length;
     if(n > 65535) throw new Error('the kingdom is too large for one glyph');
     const buf = new Uint8Array(4096 + n * (S.FW * S.FH * 2 + 1024));
@@ -395,13 +410,160 @@ const GLYPH = (function(){
     return { gif: buf.slice(0, w.end()), frames: n };
   }
 
+  /* ═══ v2 — the current Orv, pixel-art frames, his own colouring ═══ */
+  const V2 = 2, DELAY2_CS = 18, RING = 'R';
+  const LIN = new Float64Array(256);
+  for(let c = 0; c < 256; c++){ const v = c / 255; LIN[c] = v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
+  const isDark = (d, o) => d[o + 3] >= 128 && 0.2126 * LIN[d[o]] + 0.7152 * LIN[d[o + 1]] + 0.0722 * LIN[d[o + 2]] < OUTLINE_LUM;
+  const rgbOf = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
+  let SP2 = null;
+  /* per pose, per cell: 0 empty · 1 dark anchor (outline or pupil) · 2 body data · 3 ring · 4 eye data */
+  function sprite2(){
+    if(SP2) return SP2;
+    const o = ORV2_SPRITE, W = o.w, H = o.h, K = o.k, B = Math.round(Math.log2(K));
+    if(1 << B !== K || 8 % B) throw new Error('K must be 2, 4, 16 or 256');
+    const used = new Set(); o.frames.forEach(rows => rows.forEach(r => { for(const c of r) used.add(c); }));
+    /* the GIF palette: the 23 · white · his anchor tones · K variants of each body tone */
+    const gpal = PAL.map(c => c.slice()).concat([[255, 255, 255]]), anchorIdx = {}, varIdx = {}, varRGB = {};
+    Object.keys(o.pal).forEach(ch => { const h = o.pal[ch]; if(h && used.has(ch) && !o.variants[ch]){ anchorIdx[ch] = gpal.length; gpal.push(rgbOf(h.toLowerCase())); } });
+    Object.keys(o.variants).forEach(ch => { varRGB[ch] = o.variants[ch].map(h => rgbOf(h.toLowerCase())); varIdx[ch] = varRGB[ch].map(c => { gpal.push(c); return gpal.length - 1; }); });
+    if(gpal.length > 256) throw new Error('the v2 palette overflows 256');
+    while(gpal.length < 256) gpal.push([255, 255, 255]);
+    const poses = o.frames.map(rows => {
+      const N = W * H, kinds = new Uint8Array(N), chr = new Array(N);
+      let rx0 = 1e9, ry0 = 1e9, rx1 = -1, ry1 = -1;
+      for(let y = 0; y < H; y++) for(let x = 0; x < W; x++){
+        const i = y * W + x, ch = rows[y][x], hex = o.pal[ch]; chr[i] = ch;
+        kinds[i] = !hex ? 0 : ch === RING ? 3 : relLum(hex) < OUTLINE_LUM ? 1 : 2;
+        if(kinds[i] === 2 && !varIdx[ch]) throw new Error('no variants for tone ' + ch);
+        if(ch === RING){ if(x < rx0) rx0 = x; if(x > rx1) rx1 = x; if(y < ry0) ry0 = y; if(y > ry1) ry1 = y; }
+      }
+      /* the eye: the cells of the ring's box the outside cannot reach without crossing bronze (4-neighbour fill) */
+      const outside = new Uint8Array(N), st = [];
+      for(let y = ry0; y <= ry1; y++) for(let x = rx0; x <= rx1; x++){ const i = y * W + x; if((y === ry0 || y === ry1 || x === rx0 || x === rx1) && kinds[i] !== 3){ outside[i] = 1; st.push(i); } }
+      while(st.length){ const i = st.pop(), x = i % W, y = (i - x) / W;
+        for(const [nx, ny] of [[x - 1, y], [x + 1, y], [x, y - 1], [x, y + 1]]){ if(nx < rx0 || nx > rx1 || ny < ry0 || ny > ry1) continue; const j = ny * W + nx; if(!outside[j] && kinds[j] !== 3){ outside[j] = 1; st.push(j); } } }
+      let pupil = 0, ring = 0, outline = 0, x0 = 1e9, y0 = 1e9, x1 = -1, y1 = -1;
+      for(let y = ry0; y <= ry1; y++) for(let x = rx0; x <= rx1; x++){ const i = y * W + x; if(outside[i] || kinds[i] === 3) continue; if(kinds[i] === 1) pupil++; else if(kinds[i] === 2) kinds[i] = 4; }
+      const eye = [], body = [];
+      for(let i = 0; i < N; i++){
+        const k = kinds[i], x = i % W, y = (i - x) / W;
+        if(k === 4) eye.push(i); else if(k === 2) body.push(i); else if(k === 3) ring++;
+        else if(k === 1){ outline++; if(x < x0) x0 = x; if(x > x1) x1 = x; if(y < y0) y0 = y; if(y > y1) y1 = y; }
+      }
+      outline -= pupil;
+      const eyeBytes = eye.length >> 1, cap = eyeBytes + ((body.length * B) >> 3);
+      return { kinds, chr, eye, body, eyeBytes, cap, outline, pupil, ring, ringBox: [rx0, ry0, rx1, ry1], bbox: [x0, y0, x1, y1] };
+    });
+    SP2 = { W, H, K, B, FW: (W + 2 * MARGIN) * CELL, FH: (H + 2 * MARGIN) * CELL, poses, gpal, anchorIdx, varIdx, varRGB };
+    return SP2;
+  }
+  function plan2(payload){
+    const P = sprite2().poses, chunks = [];
+    let off = 0, i = 0;
+    do { const cap = P[i % 4].cap - HEAD - TAIL; chunks.push(payload.subarray(off, off + cap)); off += cap; i++; } while(off < payload.length);
+    return chunks;
+  }
+  function frameBody2(i, n, chunk){
+    const body = new Uint8Array(HEAD + chunk.length + TAIL);
+    body.set([0x4D, 0x47, V2, i >> 8, i & 255, n >> 8, n & 255, chunk.length >> 8, chunk.length & 255]);
+    body.set(chunk, HEAD);
+    const crc = crc16(body, HEAD + chunk.length); body[HEAD + chunk.length] = crc >> 8; body[HEAD + chunk.length + 1] = crc & 255;
+    return body;
+  }
+  /* frame i → palette index per sprite cell (Uint8Array W*H; empty cells = white) */
+  function frameCells2(i, n, chunk){
+    const S = sprite2(), pose = S.poses[i % 4], bytes = frameBody2(i, n, chunk), val = new Uint8Array(S.W * S.H).fill(23);
+    pose.eye.forEach((c, p) => { const j = p >> 1; val[c] = j < pose.eyeBytes && j < bytes.length ? (p & 1 ? bytes[j] % 23 : Math.floor(bytes[j] / 23)) : p % 23; });
+    const rest = bytes.subarray(Math.min(pose.eyeBytes, bytes.length));
+    pose.body.forEach((c, q) => {
+      let digit = 0;
+      for(let t = 0; t < S.B; t++){ const bit = q * S.B + t, k = bit >> 3; digit = digit << 1 | (k < rest.length ? (rest[k] >> (7 - (bit & 7))) & 1 : 0); }
+      val[c] = S.varIdx[pose.chr[c]][digit];
+    });
+    for(let c = 0; c < S.W * S.H; c++){ const k = pose.kinds[c]; if(k === 1 || k === 3) val[c] = S.anchorIdx[pose.chr[c]]; }
+    return val;
+  }
+  function frameIndices2(i, n, chunk){
+    const S = sprite2(), val = frameCells2(i, n, chunk), buf = new Uint8Array(S.FW * S.FH).fill(23);
+    for(let c = 0; c < S.W * S.H; c++){
+      if(val[c] === 23) continue;
+      const x0 = (c % S.W + MARGIN) * CELL, y0 = (Math.floor(c / S.W) + MARGIN) * CELL;
+      for(let dy = 0; dy < CELL; dy++) buf.fill(val[c], (y0 + dy) * S.FW + x0, (y0 + dy) * S.FW + x0 + CELL);
+    }
+    return buf;
+  }
+  function encodePayload2(payload){
+    const S = sprite2(), chunks = plan2(payload), n = chunks.length;
+    if(n > 65535) throw new Error('the kingdom is too large for one glyph');
+    const buf = new Uint8Array(4096 + n * (S.FW * S.FH * 2 + 1024));
+    const w = new GifWriter(buf, S.FW, S.FH, { palette: S.gpal.map(([r, g, b]) => (r << 16) | (g << 8) | b), loop: 0 });
+    chunks.forEach((ch, i) => w.addFrame(0, 0, S.FW, S.FH, frameIndices2(i, n, ch), { delay: DELAY2_CS, disposal: 1 }));
+    return { gif: buf.slice(0, w.end()), frames: n };
+  }
+  /* payload (zlib bytes) → GIF bytes; v2 unless told otherwise */
+  function encodePayload(payload, version){ return version === 1 ? encodePayload1(payload) : encodePayload2(payload); }
+
   /* keys {name: string} → the glyph. keys arrive already filtered (the glass keeps the NEVER set out). */
-  function encodeKingdom(keys, at){
+  function encodeKingdom(keys, at, version){
     const sorted = {}; Object.keys(keys).sort().forEach(k => { sorted[k] = String(keys[k]); });
     const json = JSON.stringify({ v: 1, kind: 'mythglyph', at, keys: sorted });
     const deflated = pako.deflate(new TextEncoder().encode(json), { level: 9 });
-    const g = encodePayload(deflated);
-    return { gif: g.gif, frames: g.frames, bytes: deflated.length, deflated, json, at };
+    const g = encodePayload(deflated, version);
+    return { gif: g.gif, frames: g.frames, bytes: deflated.length, deflated, json, at, version: version === 1 ? 1 : 2 };
+  }
+
+  /* v2 reading: the known tone at each body cell picks among its own K variants; the eye among the 23 */
+  function readCells2(p, samples){
+    const S = sprite2(), pose = S.poses[p], digits = new Int16Array(pose.body.length).fill(-1);
+    const bodyDigit = q => {
+      if(digits[q] >= 0) return digits[q];
+      const s = samples[pose.body[q]], vs = S.varRGB[pose.chr[pose.body[q]]];
+      let best = 0, bd = Infinity;
+      for(let v = 0; v < vs.length; v++){ const d = (s[0] - vs[v][0]) ** 2 + (s[1] - vs[v][1]) ** 2 + (s[2] - vs[v][2]) ** 2; if(d < bd){ bd = d; best = v; } }
+      return digits[q] = best;
+    };
+    const byteAt = j => {
+      if(j < pose.eyeBytes){ const a = samples[pose.eye[2 * j]], b = samples[pose.eye[2 * j + 1]], v = nearest(a[0], a[1], a[2]) * 23 + nearest(b[0], b[1], b[2]); return v < 256 ? v : -1; }
+      let v = 0; const k = j - pose.eyeBytes;
+      for(let bit = 8 * k; bit < 8 * k + 8; bit++){ const q = Math.floor(bit / S.B), t = bit % S.B; v = v << 1 | (bodyDigit(q) >> (S.B - 1 - t)) & 1; }
+      return v;
+    };
+    const head = []; for(let j = 0; j < HEAD; j++) head.push(byteAt(j));
+    if(head.includes(-1) || head[0] !== 0x4D || head[1] !== 0x47) return { ok: false, why: 'no MG magic', depth: 0 };
+    if(head[2] !== V2) return { ok: false, why: 'version ' + head[2], depth: 0 };
+    const i = head[3] << 8 | head[4], n = head[5] << 8 | head[6], len = head[7] << 8 | head[8];
+    if(i % 4 !== p) return { ok: false, why: 'pose ' + p + ' does not carry chunk ' + i, depth: 1 };
+    if(HEAD + len + TAIL > pose.cap) return { ok: false, why: 'length ' + len + ' overruns the pose', i, n, depth: 2 };
+    const body = new Uint8Array(HEAD + len + TAIL);
+    for(let j = 0; j < body.length; j++){ const v = byteAt(j); if(v < 0) return { ok: false, why: 'a cell out of range', i, n, depth: 2 }; body[j] = v; }
+    const ok = crc16(body, HEAD + len) === (body[HEAD + len] << 8 | body[HEAD + len + 1]);
+    return { ok, why: ok ? '' : 'CRC mismatch', i, n, len, payload: body.slice(HEAD, HEAD + len), depth: 3 };
+  }
+  /* v2: find him by the bounding box of his dark anchor tones; any uniform scale or offset reads the same */
+  function readFrame2(d, w, h){
+    const S = sprite2();
+    let x0 = 1e9, y0 = 1e9, x1 = -1, y1 = -1;
+    for(let y = 0; y < h; y++) for(let x = 0; x < w; x++) if(isDark(d, (y * w + x) * 4)){ if(x < x0) x0 = x; if(x > x1) x1 = x; if(y < y0) y0 = y; if(y > y1) y1 = y; }
+    if(x1 < 0) return { ok: false, why: 'no dark outline', depth: -1 };
+    const tries = S.poses.map((pose, p) => {
+      const [bx0, by0, bx1, by1] = pose.bbox;
+      const sx = (x1 - x0 + 1) / (bx1 - bx0 + 1), sy = (y1 - y0 + 1) / (by1 - by0 + 1), ox = x0 - bx0 * sx, oy = y0 - by0 * sy;
+      const samples = new Array(S.W * S.H); let score = 0;
+      for(let c = 0; c < S.W * S.H; c++){
+        let px = Math.floor(ox + (c % S.W + 0.5) * sx), py = Math.floor(oy + (Math.floor(c / S.W) + 0.5) * sy);
+        px = Math.min(Math.max(px, 0), w - 1); py = Math.min(Math.max(py, 0), h - 1);
+        const o = (py * w + px) * 4; samples[c] = [d[o], d[o + 1], d[o + 2], d[o + 3]];
+        if(isDark(d, o) === (pose.kinds[c] === 1)) score++;
+      }
+      return { p, score, samples };
+    }).sort((a, b) => b.score - a.score || a.p - b.p);
+    let worst = null;
+    for(const t of tries){
+      const r = readCells2(t.p, t.samples); r.pose = t.p; r.score = t.score / (S.W * S.H);
+      if(r.ok) return r; if(!worst || r.depth > worst.depth) worst = r;
+    }
+    return worst;
   }
 
   /* ── reading ── */
@@ -411,7 +573,7 @@ const GLYPH = (function(){
     for(let k = 0; k < 23; k++){ const p = PAL[k], d = (r - p[0]) ** 2 + (g - p[1]) ** 2 + (b - p[2]) ** 2; if(d < bd){ bd = d; best = k; } }
     return best;
   }
-  function readCells(p, samples){
+  function readCells1(p, samples){
     const pose = sprite().poses[p], data = pose.data;
     const byteAt = j => { const a = samples[data[2 * j]], b = samples[data[2 * j + 1]]; const v = nearest(a[0], a[1], a[2]) * 23 + nearest(b[0], b[1], b[2]); return v < 256 ? v : -1; };
     const head = []; for(let j = 0; j < HEAD; j++) head.push(byteAt(j));
@@ -427,9 +589,9 @@ const GLYPH = (function(){
     const ok = crc16(body, HEAD + len) === (body[HEAD + len] << 8 | body[HEAD + len + 1]);
     return { ok, why: ok ? '' : 'CRC mismatch', i, n, len, payload: body.slice(HEAD, HEAD + len), depth: 3 };
   }
-  /* one RGBA picture → one chunk (or why not). Locks onto the black outline's bounding box,
+  /* v1: one RGBA picture → one chunk (or why not). Locks onto the black outline's bounding box,
      so any uniform scale or offset reads the same; tries the best-fitting pose first. */
-  function readFrame(d, w, h){
+  function readFrame1(d, w, h){
     const S = sprite();
     let x0 = 1e9, y0 = 1e9, x1 = -1, y1 = -1;
     for(let y = 0; y < h; y++) for(let x = 0; x < w; x++) if(isBlack(d, (y * w + x) * 4)){ if(x < x0) x0 = x; if(x > x1) x1 = x; if(y < y0) y0 = y; if(y > y1) y1 = y; }
@@ -448,10 +610,16 @@ const GLYPH = (function(){
     }).sort((a, b) => b.score - a.score || a.p - b.p);
     let worst = null;                 // the failure that got furthest is the one worth reporting
     for(const t of tries){
-      const r = readCells(t.p, t.samples); r.pose = t.p; r.score = t.score / (S.W * S.H);
+      const r = readCells1(t.p, t.samples); r.pose = t.p; r.score = t.score / (S.W * S.H);
       if(r.ok) return r; if(!worst || r.depth > worst.depth) worst = r;
     }
     return worst;
+  }
+  /* one RGBA picture → one chunk: v2 first, then v1; a frame counts only when magic + CRC hold */
+  function readFrame(d, w, h){
+    const r2 = readFrame2(d, w, h); r2.version = 2; if(r2.ok) return r2;
+    const r1 = readFrame1(d, w, h); r1.version = 1; if(r1.ok) return r1;
+    return (r1.depth || 0) > (r2.depth || 0) ? r1 : r2;
   }
   const isGif = b => b.length > 6 && b[0] === 0x47 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x38;
   /* every frame of a GIF, composited as a viewer would, read one by one */
@@ -488,8 +656,9 @@ const GLYPH = (function(){
     try { const o = JSON.parse(new TextDecoder().decode(raw)); return o && o.kind === 'mythglyph' ? o : null; } catch { return null; }
   }
   function numbers(){ return sprite().poses.map((p, i) => ({ pose: i, outline: p.outline, data: p.data.length, bytes: p.cap, payload: p.cap - HEAD - TAIL, bbox: p.bbox })); }
+  function numbers2(){ const S = sprite2(); return S.poses.map((p, i) => ({ pose: i, anchor: p.outline, ring: p.ring, pupil: p.pupil, eye: p.eye.length, body: p.body.length, bits: p.eyeBytes * 8 + p.body.length * S.B, bytes: p.cap, payload: p.cap - HEAD - TAIL, bbox: p.bbox, ringBox: p.ringBox })); }
 
-  return { PAL, encodeKingdom, encodePayload, frameIndices, readFrame, readGif, assemble, openDeflated, isGif, crc16, numbers, sprite };
+  return { PAL, encodeKingdom, encodePayload, frameIndices, frameIndices2, frameCells2, readFrame, readFrame1, readFrame2, readGif, assemble, openDeflated, isGif, crc16, numbers, numbers2, sprite, sprite2 };
 })();
 /* the glass — _glass.js */
 /* ═══════════════════════════════════════════════════════════════════════
@@ -499,7 +668,9 @@ const GLYPH = (function(){
    Nothing here needs a key. The page ships empty and gives up nothing.
    ═══════════════════════════════════════════════════════════════════════ */
 const $ = id => document.getElementById(id);
-const PAGE = document.body.dataset.page || 'day-one';
+/* sword.html?p=<page-id> opens any sword in localStorage; every other page names itself in data-page */
+const QP = new URLSearchParams(location.search).get('p');
+const PAGE = document.body.dataset.page === 'sword' ? (QP && /^[a-z0-9][a-z0-9-]*$/i.test(QP) ? QP : 'day-one') : (document.body.dataset.page || 'day-one');
 const STORE = 'monomyth.sword.' + PAGE;
 const SOURCE_KEY = STORE + '.v1';                       // the story as it arrived in the .myth
 const LEDGER_KEY = 'monomyth.sword.ledger.v1';           // append-only; never trimmed
@@ -523,10 +694,11 @@ async function loadBook(){
 function mountBook(book){
   const flow = $('flow'); flow.textContent = '';
   if(!book){
-    $('one').textContent = 'restore the kingdom';
-    flow.appendChild(el('p', 'run d1', 'This page ships empty and gives up nothing. Your story rides in the .myth: RESTORE below, then pick it from Files.'));
+    $('one').textContent = document.body.dataset.page === 'sword' ? 'no sword named ' + PAGE + ' on this phone' : 'restore the kingdom';
+    flow.appendChild(el('p', 'run d1', 'This page ships empty and gives up nothing. Your story rides in Orv: SCAN ORV above and pick the saved glyph, or RESTORE the .myth below.'));
     $('tally').textContent = ''; VIEW = null; return;
   }
+  if(document.body.dataset.page === 'sword' && book.title) document.title = book.title;
   VIEW = SWORD.mount(flow, book, {
     store: STORE,
     oneThing: (text, total, done) => { $('one').textContent = text; $('tally').textContent = done + ' / ' + total + ' deeds struck'; },
@@ -637,7 +809,7 @@ function showGlyph(){
   GLYPH_FILE = new File([g.gif], `seeker-${stampNow()}.mythglyph.gif`, { type: 'image/gif' });
   if(GLYPH_URL) URL.revokeObjectURL(GLYPH_URL); GLYPH_URL = URL.createObjectURL(GLYPH_FILE);
   const body = $('markbody'); body.textContent = '';
-  body.appendChild(el('p', 'marklab', 'GLYPH · ' + g.frames + ' frames · ' + g.bytes + ' bytes · ' + Math.ceil(g.gif.length / 1024) + ' KB'));
+  body.appendChild(el('p', 'marklab', 'GLYPH v' + g.version + ' · ' + g.frames + ' frames · ' + g.bytes + ' bytes · ' + Math.ceil(g.gif.length / 1024) + ' KB'));
   const img = el('img', 'glyphimg'); img.src = GLYPH_URL; img.alt = 'Orv, breathing: the kingdom in ' + g.frames + ' frames'; img.width = 180; img.height = 216;
   body.appendChild(img);
   $('markhead').textContent = localAt(g.at);
@@ -705,23 +877,63 @@ function done(k, frames, bytes){
   $('glyphnote').textContent = frames + ' frames · ' + bytes + ' bytes · ' + Object.keys(k.keys || {}).length + ' keys';
   $('glyphat').textContent = localAt(k.at); $('glyphat').title = k.at; $('glyphdone').hidden = false;
 }
-async function readGlyph(file, camera){
-  const note = $('glyphnote'); $('glyphdone').hidden = true; note.textContent = 'reading ' + (file.name || 'the picture') + ' …';
+/* the one reader behind the Glyph page and the scan line on every page: read, apply, keep on the shelf */
+async function takeGlyph(file, camera){
   let res;
-  try { res = await pictureFrames(file); } catch(e){ note.textContent = 'that picture would not open: ' + (e.message || e); return; }
+  try { res = await pictureFrames(file); } catch(e){ return { ok: false, note: 'that picture would not open: ' + (e.message || e) }; }
   const w = GLYPH.assemble(res);
   if(!w.ok){
-    if(w.why === 'none') note.textContent = camera ? 'no glyph in this photo: a camera cannot read a screen yet. Choose the saved glyph from your photos.' : 'no glyph in this picture. Choose the saved .mythglyph.gif from your photos.';
-    else if(w.why === 'missing' && w.pictures === 1) note.textContent = 'a photo holds one frame of ' + w.n + '; choose the saved glyph from your photos';
-    else if(w.why === 'missing') note.textContent = 'read ' + w.read + ' of ' + w.n + ' frames; this copy is missing ' + w.missing.slice(0, 8).map(i => i + 1).join(', ') + (w.missing.length > 8 ? ' …' : '') + '. Choose the saved glyph itself.';
-    else note.textContent = 'every frame read, but the kingdom inside would not open';
-    return;
+    if(w.why === 'none') return { ok: false, note: camera ? 'no glyph in this photo: a camera cannot read a screen yet. Choose the saved glyph from your photos.' : 'no glyph in this picture. Choose the saved .mythglyph.gif from your photos.' };
+    if(w.why === 'missing' && w.pictures === 1) return { ok: false, note: 'a photo holds one frame of ' + w.n + '; choose the saved glyph from your photos' };
+    if(w.why === 'missing') return { ok: false, note: 'read ' + w.read + ' of ' + w.n + ' frames; this copy is missing ' + w.missing.slice(0, 8).map(i => i + 1).join(', ') + (w.missing.length > 8 ? ' …' : '') + '. Choose the saved glyph itself.' };
+    return { ok: false, note: 'every frame read, but the kingdom inside would not open' };
   }
   applyKingdom(w.kingdom);
   const H = jget(HISTORY_KEY, []), d64 = b64(w.deflated);
   let at = H.findIndex(h => h.at === w.kingdom.at && h.deflated === d64);
   if(at < 0){ H.push({ at: w.kingdom.at, name: file.name || '', frames: w.n, bytes: w.deflated.length, deflated: d64, read: new Date().toISOString() }); jput(HISTORY_KEY, H); at = H.length - 1; }
-  done(w.kingdom, w.n, w.deflated.length); drawTabs(at);
+  return { ok: true, kingdom: w.kingdom, n: w.n, bytes: w.deflated.length, at };
+}
+async function readGlyph(file, camera){
+  const note = $('glyphnote'); $('glyphdone').hidden = true; note.textContent = 'reading ' + (file.name || 'the picture') + ' …';
+  const t = await takeGlyph(file, camera);
+  if(!t.ok){ note.textContent = t.note; return; }
+  done(t.kingdom, t.n, t.bytes); drawTabs(t.at); buildShelf();
+}
+/* the scan line at the top of every sword page: go right in, read Orv, the page redraws in place */
+function scanLine(){
+  if(!$('scanfile')) return;
+  const note = $('scannote');
+  const pick = (id, camera) => $(id).addEventListener('change', async e => {
+    const f = e.target.files[0]; e.target.value = ''; if(!f) return;
+    if(!window.pako || !window.GifReader){ note.textContent = 'the glyph libraries did not load'; return; }
+    note.textContent = 'reading Orv …';
+    const t = await takeGlyph(f, camera);
+    if(!t.ok){ note.textContent = t.note; return; }
+    note.textContent = 'the kingdom is now ' + localAt(t.kingdom.at) + ' · ' + Object.keys(t.kingdom.keys || {}).length + ' keys';
+    buildShelf();
+    if(PAGE !== 'glyph') mountBook(await loadBook());
+  });
+  pick('scanfile', false); pick('scancam', true);
+}
+/* the shelf, built from what this phone holds: every sword in localStorage, then the public quests,
+   the Glyph and the Crown. With nothing in localStorage the static links in the page stand. */
+const OWN_PAGES = { 'day-one': './', 'wild-beasts': './wild-beasts.html', 'empty-square': './empty-square.html' };
+const PUBLIC = [['wolf', 'Wolf', './wolf.html'], ['ravens', 'Ravens', './ravens.html'], ['dragons', 'Dragons', './dragons.html'], ['glyph', 'Glyph', './glyph.html'], ['crown', 'Crown', './crown/']];
+function buildShelf(){
+  const nav = document.querySelector('.shelf'); if(!nav) return;
+  const own = [];
+  Object.keys(localStorage).forEach(k => {
+    const m = /^monomyth\.sword\.([a-z0-9][a-z0-9-]*)\.v1$/i.exec(k); if(!m || PUBLIC.some(p => p[0] === m[1])) return;
+    const b = jget(k, null); if(!b || typeof b !== 'object' || Array.isArray(b) || !(b.story || b.title)) return;
+    own.push({ id: m[1], title: String(b.title || m[1]) });
+  });
+  if(!own.length) return;
+  own.sort((a, b) => a.id === 'day-one' ? -1 : b.id === 'day-one' ? 1 : a.title.localeCompare(b.title));
+  nav.textContent = '';
+  own.map(o => [o.id, o.title, OWN_PAGES[o.id] || './sword.html?p=' + encodeURIComponent(o.id)]).concat(PUBLIC).forEach(([id, label, href]) => {
+    const a = el('a', null, label); a.href = href; if(id === PAGE) a.setAttribute('aria-current', 'page'); nav.appendChild(a);
+  });
 }
 function glyphPage(){
   if(!window.pako || !window.GifReader){ $('glyphnote').textContent = 'the glyph libraries did not load'; return; }
@@ -768,7 +980,8 @@ async function main(){
   $('glyphsave').addEventListener('click', saveGlyph);
   $('markclose').addEventListener('click', () => { $('mark').hidden = true; });
   $('backup').addEventListener('click', async () => { try { $('feetnote').textContent = 'the .myth ' + (await backup()); } catch(e){ $('feetnote').textContent = String(e.message || e); } });
-  $('restorefile').addEventListener('change', async e => { const f = e.target.files[0]; if(!f) return; try { const n = await restore(f); $('feetnote').textContent = n + ' keys restored'; mountBook(await loadBook()); } catch(err){ $('feetnote').textContent = String(err.message || err); } });
+  $('restorefile').addEventListener('change', async e => { const f = e.target.files[0]; if(!f) return; try { const n = await restore(f); $('feetnote').textContent = n + ' keys restored'; mountBook(await loadBook()); buildShelf(); } catch(err){ $('feetnote').textContent = String(err.message || err); } });
   $('shutAll').addEventListener('click', () => { if(VIEW) VIEW.shut(); });
 }
+buildShelf(); scanLine();
 if(PAGE === 'glyph') glyphPage(); else main();
