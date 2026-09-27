@@ -112,3 +112,4 @@ body.hastabs{ padding-left:44px }
 .scan label:active{ background:var(--ink); color:var(--paper) }
 .scan input[type=file]{ display:none }
 #scannote{ color:var(--faint); font-size:14px; line-height:1.4 }
+.glyphimg.sheet{ width:100% }

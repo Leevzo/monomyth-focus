@@ -658,7 +658,48 @@ const GLYPH = (function(){
   function numbers(){ return sprite().poses.map((p, i) => ({ pose: i, outline: p.outline, data: p.data.length, bytes: p.cap, payload: p.cap - HEAD - TAIL, bbox: p.bbox })); }
   function numbers2(){ const S = sprite2(); return S.poses.map((p, i) => ({ pose: i, anchor: p.outline, ring: p.ring, pupil: p.pupil, eye: p.eye.length, body: p.body.length, bits: p.eyeBytes * 8 + p.body.length * S.B, bytes: p.cap, payload: p.cap - HEAD - TAIL, bbox: p.bbox, ringBox: p.ringBox })); }
 
-  return { PAL, encodeKingdom, encodePayload, frameIndices, frameIndices2, frameCells2, readFrame, readFrame1, readFrame2, readGif, assemble, openDeflated, isGif, crc16, numbers, numbers2, sprite, sprite2 };
+  /* ═══ THE SHEET (v2, 2026-09-27) — every frame laid out in one still picture, 8 across, row by row.
+     A phone flattens a GIF to its first frame when it saves or picks one; a PNG it keeps pixel for
+     pixel. Same frames, same codec; the reader cuts the picture where no dark tone crosses. ═══ */
+  const SHEET_COLS = 8;
+  function encodeSheet(deflated){
+    const S = sprite2(), chunks = plan2(deflated), n = chunks.length;
+    const cols = Math.min(n, SHEET_COLS), rows = Math.ceil(n / cols), w = cols * S.FW, h = rows * S.FH;
+    const rgba = new Uint8ClampedArray(w * h * 4).fill(255);
+    chunks.forEach((ch, i) => {
+      const idx = frameIndices2(i, n, ch), ox = (i % cols) * S.FW, oy = Math.floor(i / cols) * S.FH;
+      for(let y = 0; y < S.FH; y++) for(let x = 0; x < S.FW; x++){
+        const c = S.gpal[idx[y * S.FW + x]], o = ((oy + y) * w + ox + x) * 4;
+        rgba[o] = c[0]; rgba[o + 1] = c[1]; rgba[o + 2] = c[2];
+      }
+    });
+    return { w, h, rgba, frames: n };
+  }
+  /* runs of true in a flag array → [start, end] pairs */
+  function runs(flags){ const out = []; let a = -1; for(let i = 0; i <= flags.length; i++){ if(i < flags.length && flags[i]){ if(a < 0) a = i; } else if(a >= 0){ out.push([a, i - 1]); a = -1; } } return out; }
+  /* one still picture → every Orv in it, read one by one (a single Orv reads as one) */
+  function readSheet(d, w, h){
+    const dark = new Uint8Array(w * h);
+    for(let o = 0; o < w * h; o++) if(isDark(d, o * 4)) dark[o] = 1;
+    const rowOn = new Uint8Array(h); for(let y = 0; y < h; y++){ for(let x = 0; x < w; x++) if(dark[y * w + x]){ rowOn[y] = 1; break; } }
+    /* a blur can crack his outline: join runs closer than two cells (the space between Orvs is four) */
+    const close = (rs, gap) => rs.reduce((o, r) => { if(o.length && r[0] - o[o.length - 1][1] - 1 < gap) o[o.length - 1][1] = r[1]; else o.push(r.slice()); return o; }, []);
+    const rr = runs(rowOn); if(!rr.length) return [readFrame(d, w, h)];
+    const cell = Math.max(...rr.map(([a, b]) => b - a + 1)) / sprite2().H, out = [];
+    close(rr, 2 * cell).forEach(([ya, yb]) => {
+      const colOn = new Uint8Array(w); for(let y = ya; y <= yb; y++) for(let x = 0; x < w; x++) if(dark[y * w + x]) colOn[x] = 1;
+      close(runs(colOn), 2 * (yb - ya + 1) / sprite2().H).forEach(([xa, xb]) => {
+        if(xb - xa < 20 || yb - ya < 20) return;                  // a speck or a line of text, not Orv
+        const pad = 2, x0 = Math.max(0, xa - pad), y0 = Math.max(0, ya - pad), x1 = Math.min(w - 1, xb + pad), y1 = Math.min(h - 1, yb + pad);
+        const cw = x1 - x0 + 1, chh = y1 - y0 + 1, sub = new Uint8ClampedArray(cw * chh * 4);
+        for(let y = 0; y < chh; y++) sub.set(d.subarray(((y0 + y) * w + x0) * 4, ((y0 + y) * w + x1 + 1) * 4), y * cw * 4);
+        out.push(readFrame(sub, cw, chh));
+      });
+    });
+    return out.length ? out : [readFrame(d, w, h)];
+  }
+
+  return { PAL, encodeKingdom, encodeSheet, readSheet, encodePayload, frameIndices, frameIndices2, frameCells2, readFrame, readFrame1, readFrame2, readGif, assemble, openDeflated, isGif, crc16, numbers, numbers2, sprite, sprite2 };
 })();
 /* the glass — _glass.js */
 /* ═══════════════════════════════════════════════════════════════════════
@@ -804,16 +845,21 @@ function sizeGlyph(img){
   const k = Math.max(1, Math.floor(room * dpr / 180)); img.style.width = (180 * k / dpr) + 'px';
 }
 function showGlyph(){
-  if(!window.pako || !window.GifWriter){ $('feetnote').textContent = 'the glyph libraries did not load'; return; }
+  if(!window.pako) { $('feetnote').textContent = 'the glyph libraries did not load'; return; }
   const g = GLYPH.encodeKingdom(kingdomKeys(), new Date().toISOString());
-  GLYPH_FILE = new File([g.gif], `seeker-${stampNow()}.mythglyph.gif`, { type: 'image/gif' });
-  if(GLYPH_URL) URL.revokeObjectURL(GLYPH_URL); GLYPH_URL = URL.createObjectURL(GLYPH_FILE);
-  const body = $('markbody'); body.textContent = '';
-  body.appendChild(el('p', 'marklab', 'GLYPH v' + g.version + ' · ' + g.frames + ' frames · ' + g.bytes + ' bytes · ' + Math.ceil(g.gif.length / 1024) + ' KB'));
-  const img = el('img', 'glyphimg'); img.src = GLYPH_URL; img.alt = 'Orv, breathing: the kingdom in ' + g.frames + ' frames'; img.width = 180; img.height = 216;
-  body.appendChild(img);
-  $('markhead').textContent = localAt(g.at);
-  $('mark').hidden = false; sizeGlyph(img);
+  /* the save is ONE still picture: every frame of Orv on one sheet (a phone flattens a GIF; a PNG it keeps) */
+  const sh = GLYPH.encodeSheet(g.deflated), cv = document.createElement('canvas'); cv.width = sh.w; cv.height = sh.h;
+  cv.getContext('2d').putImageData(new ImageData(sh.rgba, sh.w, sh.h), 0, 0);
+  cv.toBlob(blob => {
+    GLYPH_FILE = new File([blob], `kingdom-${stampNow()}.mythglyph.png`, { type: 'image/png' });
+    if(GLYPH_URL) URL.revokeObjectURL(GLYPH_URL); GLYPH_URL = URL.createObjectURL(GLYPH_FILE);
+    const body = $('markbody'); body.textContent = '';
+    body.appendChild(el('p', 'marklab', sh.frames + ' Orvs · ' + g.bytes + ' bytes · ' + Math.ceil(blob.size / 1024) + ' KB · save it to Photos'));
+    const img = el('img', 'glyphimg sheet'); img.src = GLYPH_URL; img.alt = 'the kingdom as ' + sh.frames + ' Orvs'; img.width = sh.w; img.height = sh.h;
+    body.appendChild(img);
+    $('markhead').textContent = localAt(g.at);
+    $('mark').hidden = false;
+  }, 'image/png');
 }
 async function saveGlyph(){
   const file = GLYPH_FILE; if(!file) return;
@@ -850,13 +896,13 @@ function applyKingdom(k){
 }
 async function pictureFrames(file){
   const buf = new Uint8Array(await file.arrayBuffer());
-  if(GLYPH.isGif(buf)){ try { return GLYPH.readGif(buf); } catch {} }
-  /* a still (a photo, a screenshot, a GIF the phone flattened): one frame, read through a canvas */
-  const bmp = await createImageBitmap(file), f = Math.min(1, 2400 / Math.max(bmp.width, bmp.height));
+  if(GLYPH.isGif(buf)){ try { const r = GLYPH.readGif(buf); if(r.length > 1) return r; } catch {} }
+  /* a still (the sheet, a screenshot of it, a GIF the phone flattened): every Orv in it, read through a canvas */
+  const bmp = await createImageBitmap(file), f = Math.min(1, 4096 / Math.max(bmp.width, bmp.height));
   const w = Math.max(1, Math.round(bmp.width * f)), h = Math.max(1, Math.round(bmp.height * f));
   const cv = document.createElement('canvas'); cv.width = w; cv.height = h;
   const cx = cv.getContext('2d'); cx.imageSmoothingEnabled = false; cx.fillStyle = '#fff'; cx.fillRect(0, 0, w, h); cx.drawImage(bmp, 0, 0, w, h);
-  return [GLYPH.readFrame(cx.getImageData(0, 0, w, h).data, w, h)];
+  return GLYPH.readSheet(cx.getImageData(0, 0, w, h).data, w, h);
 }
 function drawTabs(on){
   const H = jget(HISTORY_KEY, []), col = $('glyphtabs'); col.textContent = '';
@@ -880,10 +926,11 @@ function done(k, frames, bytes){
 /* the one reader behind the Glyph page and the scan line on every page: read, apply, keep on the shelf */
 async function takeGlyph(file, camera){
   let res;
+  if(/jpe?g/i.test(file.type || '')) return { ok: false, note: 'this copy was squeezed into a JPEG and the colours smeared. Save Orv as the PNG itself (share → Save Image, or a screenshot) and choose that.' };
   try { res = await pictureFrames(file); } catch(e){ return { ok: false, note: 'that picture would not open: ' + (e.message || e) }; }
   const w = GLYPH.assemble(res);
   if(!w.ok){
-    if(w.why === 'none') return { ok: false, note: camera ? 'no glyph in this photo: a camera cannot read a screen yet. Choose the saved glyph from your photos.' : 'no glyph in this picture. Choose the saved .mythglyph.gif from your photos.' };
+    if(w.why === 'none') return { ok: false, note: camera ? 'no glyph in this photo: a camera cannot read a screen yet. Choose the saved glyph from your photos.' : 'no glyph in this picture. Choose the saved kingdom picture from your photos.' };
     if(w.why === 'missing' && w.pictures === 1) return { ok: false, note: 'a photo holds one frame of ' + w.n + '; choose the saved glyph from your photos' };
     if(w.why === 'missing') return { ok: false, note: 'read ' + w.read + ' of ' + w.n + ' frames; this copy is missing ' + w.missing.slice(0, 8).map(i => i + 1).join(', ') + (w.missing.length > 8 ? ' …' : '') + '. Choose the saved glyph itself.' };
     return { ok: false, note: 'every frame read, but the kingdom inside would not open' };
