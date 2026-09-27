@@ -743,9 +743,9 @@ function mountBook(book){
   if(document.body.dataset.page === 'sword' && book.title) document.title = book.title;
   VIEW = SWORD.mount(flow, book, {
     store: STORE,
-    oneThing: (text, total, done) => { $('one').textContent = text; $('tally').textContent = done + ' / ' + total + ' deeds struck'; },
+    oneThing: (text, total, done) => { $('one').textContent = text; $('tally').textContent = done + ' / ' + total + ' deeds struck'; if(PORTAL) setTimeout(portalState, 0); },
     onStrike: e => ledger(e.added ? 'deed' : (e.on ? 'strike' : 'unstrike'), e.text, e.path + (e.by === 'orv' ? ' (orv)' : '')),
-    onOpen: () => { const ow = $('orvword'); if(ow) ow.textContent = VIEW.mainWord() || book.title; }
+    onOpen: () => { const ow = $('orvword'); if(ow) ow.textContent = VIEW.mainWord() || book.title; if(PORTAL) setTimeout(drawChat, 0); }
   });
 }
 
@@ -811,15 +811,18 @@ let action = false;
 function drawChat(){
   const word = VIEW.mainWord() || '_quest', lines = jget(chatKey(word), []);
   const list = $('chatlines'); list.textContent = '';
-  if(!lines.length) list.appendChild(el('p', 'chatline dim', box().apiKey ? 'Orv is listening.' : 'No key in the box: Orv is mute. Paste one below and he speaks.'));
+  if(!lines.length) list.appendChild(el('p', 'chatline dim', box().apiKey ? 'Orv is listening.' : PORTAL ? 'Orv is listening.' : 'No key in the box: Orv is mute. Paste one below and he speaks.'));
   lines.forEach(l => { const p = el('p', 'chatline ' + l.who); p.appendChild(el('b', null, l.who === 'orv' ? 'ORV ' : 'KING ')); p.appendChild(document.createTextNode(l.text)); list.appendChild(p); });
   $('orvword').textContent = word === '_quest' ? VIEW.book.title : word;
   $('actbtn').classList.toggle('on', action);
-  $('keyrow').hidden = !!box().apiKey;
+  $('keyrow').hidden = !!box().apiKey || (PORTAL && !WANT_KEY);
   list.scrollTop = list.scrollHeight;
 }
+let WANT_KEY = false;
 async function say(){
-  const inp = $('chatin'), text = inp.value.trim(); if(!text || !VIEW) return; inp.value = '';
+  const inp = $('chatin'), text = inp.value.trim(); if(!text || !VIEW) return;
+  if(PORTAL && !box().apiKey){ WANT_KEY = true; drawChat(); $('keyin').focus(); return; }
+  inp.value = '';
   const word = VIEW.mainWord() || '_quest', k = chatKey(word), lines = jget(k, []);
   lines.push({ who: 'king', text, at: new Date().toISOString() }); jput(k, lines); ledger('say', text, word); drawChat();
   try {
@@ -1034,7 +1037,44 @@ async function main(){
   $('backup').addEventListener('click', async () => { try { $('feetnote').textContent = 'the .myth ' + (await backup()); } catch(e){ $('feetnote').textContent = String(e.message || e); } });
   $('restorefile').addEventListener('change', async e => { const f = e.target.files[0]; if(!f) return; try { const n = await restore(f); $('feetnote').textContent = n + ' keys restored'; mountBook(await loadBook()); buildShelf(); } catch(err){ $('feetnote').textContent = String(err.message || err); } });
   $('shutAll').addEventListener('click', () => { if(VIEW) VIEW.shut(); });
+  if(PORTAL) portalInit();
 }
+/* ═══ THE PORTAL (Day One): the barrier he drags, its crystals and numbers, Orv breathing in the corner ═══ */
+const PORTAL = document.body.classList.contains('portal');
+const SPLIT_KEY = 'sword.split';                          // a hand's preference on this glass; never rides in a kingdom
+function portalState(){
+  if(!PORTAL || !VIEW) return;
+  const all = VIEW.deeds(), done = all.filter(d => VIEW.struck.has(d.key)).length;
+  /* one crystal a deed: lit in the 23 when struck, hollow while it waits; the row drifts left */
+  const row = $('crystals'); row.textContent = '';
+  const one = all.map((d, i) => { const g = el('span', 'gem' + (VIEW.struck.has(d.key) ? ' lit' : '')); if(VIEW.struck.has(d.key)){ const c = GLYPH.PAL[(i * 7) % 23]; g.style.background = `rgb(${c[0]},${c[1]},${c[2]})`; } return g; });
+  let reps = Math.max(2, Math.ceil((innerWidth * 2) / Math.max(1, one.length * 16)) * 2); if(reps % 2) reps++;
+  for(let r = 0; r < reps; r++) one.forEach(g => row.appendChild(g.cloneNode(true)));
+  /* the numbers, all true: deeds struck, doors done, the day, the hour; the row drifts right */
+  const now = new Date(), p = n => String(n).padStart(2, '0');
+  const bits = [done + ' of ' + all.length + ' deeds', (all.length - done) + ' to go', now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }), p(now.getHours()) + ':' + p(now.getMinutes())];
+  const nums = $('numbers'); nums.textContent = '';
+  for(let r = 0; r < 8; r++) bits.forEach(b => nums.appendChild(el('span', null, b)));
+}
+function portalInit(){
+  const saved = parseInt(localStorage.getItem(SPLIT_KEY) || '', 10);
+  const clamp = y => Math.max(90, Math.min(innerHeight - 230, y));
+  if(saved) document.body.style.setProperty('--split', clamp(saved) + 'px');
+  const bar = $('barrier'); let y0 = null, h0 = 0;
+  bar.addEventListener('pointerdown', e => { y0 = e.clientY; h0 = $('storypane').getBoundingClientRect().height; bar.setPointerCapture(e.pointerId); });
+  bar.addEventListener('pointermove', e => { if(y0 === null) return; document.body.style.setProperty('--split', clamp(h0 + e.clientY - y0) + 'px'); });
+  const up = () => { if(y0 === null) return; y0 = null; try { localStorage.setItem(SPLIT_KEY, String(Math.round($('storypane').getBoundingClientRect().height))); } catch {} };
+  bar.addEventListener('pointerup', up); bar.addEventListener('pointercancel', up);
+  /* Orv: the one sprite, the ring in his eye, his four idle poses as pixel art — never stretched */
+  const cv = $('orvsprite'), cx = cv.getContext('2d'), O = ORV2_SPRITE; let f = 0;
+  const draw = () => { cx.clearRect(0, 0, O.w, O.h); const rows = O.frames[f % O.frames.length];
+    for(let y = 0; y < O.h; y++) for(let x = 0; x < O.w; x++){ const h = O.pal[rows[y][x]]; if(h){ cx.fillStyle = h; cx.fillRect(x, y, 1, 1); } }
+    f++; };
+  draw(); if(!matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(draw, 260);
+  $('keysave').addEventListener('click', () => { WANT_KEY = false; });
+  portalState(); setInterval(portalState, 30000); drawChat();
+}
+
 /* THE LINK — the kingdom in the address itself, after the #, which never leaves the phone:
    …/monomyth-focus/#kingdom=<base64url of the glyph's zlib>. Applied once per kingdom (by its 'at'),
    so a strike made later is never undone. While it stands, the page drops its manifest so
