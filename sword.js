@@ -191,9 +191,10 @@ const SWORD = (function(){
         b.appendChild(el('span', 'word d' + Math.min(depth, 3), key));
         if((isOpen || done) && !dim) b.style.color = colourForName(key.toLowerCase(), dark);
       }
-      b.addEventListener('click', onTap);
+      b.addEventListener('click', () => { if(Date.now() < QUIET) return; onTap(); });
       if(tail){ const g = el('span', 'glue'); g.appendChild(b); g.appendChild(document.createTextNode(tail)); into.appendChild(g); }
       else into.appendChild(b);
+      return b;
     }
 
     function toggle(path, key, id){
@@ -235,7 +236,8 @@ const SWORD = (function(){
         if(m.index > at) p.appendChild(document.createTextNode(text.slice(at, m.index)));
         const key = m[1], tail = m[2], kid = node.in && node.in[key];
         const isOpen = view.open[path] === key, id = path + '/' + key;
-        door(p, key, depth, isOpen, tail, id, () => toggle(path, key, id), !!kid && complete(kid, id), key === view.book.dim);
+        const b = door(p, key, depth, isOpen, tail, id, () => toggle(path, key, id), !!kid && complete(kid, id), key === view.book.dim);
+        arm(b, path, key); if(DRAG && DRAG.path === path && DRAG.key === key) b.classList.add('dragging');
         at = m.index + m[0].length;
         if(isOpen && kid){
           const block = el('div', 'block'); tell(kid, depth + 1, block, id); into.appendChild(block);
@@ -247,6 +249,106 @@ const SWORD = (function(){
       if(!p.childNodes.length) p.remove();
       deeds(node, into, path);
     }
+
+
+    /* ═══ THE REWRITE (his idea, 2026-09-27): hold a word, drag it, and the sentence rewrites itself
+       around it as you move — the clause the word lives in travels, the punctuation stays where it
+       stood, the capitals and joins mend. On release it holds, and the doors reorder with it, so the
+       word you move first becomes the one thing. The true rewrite is Jev's; this is the approximation. ═══ */
+    const COMMON = new Set(['the', 'then', 'and', 'but', 'so', 'in', 'on', 'he', 'his', 'her', 'she', 'they', 'their', 'a', 'an', 'it', 'that', 'this', 'there', 'when', 'while', 'after', 'before', 'now', 'tonight', 'here', 'if', 'perhaps', 'learn', 'never', 'you', 'your', 'be', 'or', 'we', 'our', 'what', 'where', 'every', 'one']);
+    const nodeAt = path => { let n = view.book.story; path.split('/').slice(1).forEach(k => { n = n && n.in && n.in[k]; }); return n; };
+    function units(text){
+      /* a unit is the clause a door lives in; a clause with no door joins its neighbour —
+         the one before, unless a sentence ended there, then the one after */
+      const parts = String(text || '').split(/([,;:.!?]+(?:\s+|$))/), U = []; let pre = '';
+      for(let i = 0; i < parts.length; i += 2){
+        const seg = parts[i], sep = parts[i + 1] || '', has = /\[[^\]]+\]/.test(seg);
+        if(has){ U.push({ body: pre + seg, sep }); pre = ''; }
+        else if(U.length && !/[.!?]/.test(U[U.length - 1].sep) && !pre){ const u = U[U.length - 1]; u.body += u.sep + seg; u.sep = sep; }
+        else pre += seg + sep;
+      }
+      if(pre.trim()){ if(U.length){ const u = U[U.length - 1]; u.body += u.sep + pre.replace(/[,;:.!?]+\s*$/, ''); u.sep = (pre.match(/[,;:.!?]+\s*$/) || [''])[0]; } else U.push({ body: pre, sep: '' }); }
+      return U.map(u => ({ body: u.body, sep: u.sep, keys: [...u.body.matchAll(/\[([^\]]+)\]/g)].map(m => m[1]) }));
+    }
+    function mend(b, start, first){
+      b = b.replace(/^\s+/, '');
+      if(first) b = b.replace(/^(and|but|then|so)\s+/i, '');
+      if(b[0] === '[') return b;
+      const w = (b.match(/^[A-Za-z']+/) || [''])[0];
+      if(start) return b.charAt(0).toUpperCase() + b.slice(1);
+      if(COMMON.has(w.toLowerCase())) return b.charAt(0).toLowerCase() + b.slice(1);
+      return b;
+    }
+    function compose(U, order){
+      /* neighbours that stood together keep the punctuation between them; new neighbours meet as sentences */
+      const last = U.length - 1, end = (U[last].sep || '.').replace(/\s+$/, '') || '.';
+      const seps = order.map((ui, i) => i === order.length - 1 ? end : order[i + 1] === ui + 1 ? U[ui].sep : '. ');
+      return order.map((ui, i) => { const prev = i ? seps[i - 1] : null, start = i === 0 || /[.!?]/.test(prev || '');
+        let b = U[ui].body; if(start) b = b.replace(/^\s*(and|but)\s+/i, '');
+        return mend(b, start, i === 0) + seps[i]; }).join('');
+    }
+    function moved(n, key, overKey){
+      const U = units(n.tell), from = U.findIndex(u => u.keys.includes(key)), to = U.findIndex(u => u.keys.includes(overKey));
+      const order = U.map((_, i) => i); if(from < 0 || to < 0 || from === to) return null;
+      order.splice(from, 1); order.splice(to, 0, from);
+      const out = { tell: compose(U, order) };
+      if(n.did){ const D = units(n.did); if(D.length === U.length){
+        const map = U.map(u => D.findIndex(d => d.keys.join() === u.keys.join()));
+        if(map.every(x => x >= 0)) out.did = compose(D, order.map(ui => map[ui])); } }
+      return out;
+    }
+    let DRAG = null, QUIET = 0;
+    const reorderIn = n => { if(!n.in) return; const seen = [...n.tell.matchAll(/\[([^\]]+)\]/g)].map(m => m[1]), o = {};
+      seen.forEach(k => { if(n.in[k] && !(k in o)) o[k] = n.in[k]; }); Object.keys(n.in).forEach(k => { if(!(k in o)) o[k] = n.in[k]; }); n.in = o; };
+    function arm(b, path, key){
+      b.addEventListener('pointerdown', e => {
+        if(e.button > 0) return;
+        const n = nodeAt(path); if(!n || units(n.tell).length < 2) return;
+        const x0 = e.clientX, y0 = e.clientY, id = e.pointerId;
+        const hold = setTimeout(() => begin(), 320);
+        const early = ev => { if(ev.pointerId === id && Math.hypot(ev.clientX - x0, ev.clientY - y0) > 8) cancel(); };
+        const cancel = () => { clearTimeout(hold); removeEventListener('pointermove', early); removeEventListener('pointerup', cancel); removeEventListener('pointercancel', cancel); };
+        addEventListener('pointermove', early); addEventListener('pointerup', cancel); addEventListener('pointercancel', cancel);
+        function begin(){
+          cancel();
+          const orig = { tell: n.tell, did: n.did, in: n.in };
+          DRAG = { path, key, n, orig, over: null, ghost: el('div', 'dragghost', key) };
+          document.body.appendChild(DRAG.ghost); place(x0, y0); b.classList.add('dragging');
+          try { navigator.vibrate && navigator.vibrate(12); } catch {}
+          addEventListener('pointermove', move, { passive: false }); addEventListener('pointerup', end); addEventListener('pointercancel', end);
+          addEventListener('touchmove', stop, { passive: false });
+        }
+      });
+      b.addEventListener('contextmenu', e => e.preventDefault());
+    }
+    const stop = e => { if(DRAG) e.preventDefault(); };
+    const place = (x, y) => { DRAG.ghost.style.left = x + 'px'; DRAG.ghost.style.top = y + 'px'; };
+    function move(e){
+      if(!DRAG) return; e.preventDefault(); place(e.clientX, e.clientY);
+      const hit = document.elementFromPoint(e.clientX, e.clientY), nb = hit && hit.closest && hit.closest('.name');
+      if(!nb) return;
+      const id = nb.dataset.id || '', cut = id.lastIndexOf('/'), path = id.slice(0, cut), over = id.slice(cut + 1);
+      if(path !== DRAG.path || over === DRAG.key || over === DRAG.over) return;
+      const r = moved(DRAG.n, DRAG.key, over); if(!r) return;
+      DRAG.over = over; DRAG.n.tell = r.tell; if(DRAG.n.did) DRAG.n.did = r.did || DRAG.n.did; reorderIn(DRAG.n);
+      if(!r.did && DRAG.orig.did) DRAG.lostDid = true;
+      draw();
+    }
+    function end(){
+      if(!DRAG) return;
+      removeEventListener('pointermove', move); removeEventListener('pointerup', end); removeEventListener('pointercancel', end); removeEventListener('touchmove', stop);
+      DRAG.ghost.remove();
+      const d = DRAG; DRAG = null;
+      if(d.over){
+        if(d.lostDid) delete d.n.did;
+        /* the deeds kept their keys by door, so strikes follow the words they belong to */
+        remapStruck(d.path, d.orig.in, d.n.in);
+        jput(BOOK_KEY, view.book); keep();
+        if(opts.onRewrite) opts.onRewrite({ path: d.path, word: d.key, tell: d.n.tell });
+      }
+      QUIET = Date.now() + 450; draw();
+    }
+    function remapStruck(){ /* deed keys are path#i under each door's own path; reordering doors moves no keys */ }
 
     function draw(){
       host.textContent = '';
@@ -745,6 +847,7 @@ function mountBook(book){
     store: STORE,
     oneThing: (text, total, done) => { $('one').textContent = text; $('tally').textContent = done + ' / ' + total + ' deeds struck'; if(PORTAL) setTimeout(portalState, 0); },
     onStrike: e => ledger(e.added ? 'deed' : (e.on ? 'strike' : 'unstrike'), e.text, e.path + (e.by === 'orv' ? ' (orv)' : '')),
+    onRewrite: e => ledger('rewrite', e.tell, e.word),
     onOpen: () => { const ow = $('orvword'); if(ow) ow.textContent = VIEW.mainWord() || book.title; if(PORTAL) setTimeout(drawChat, 0); }
   });
 }
@@ -809,7 +912,8 @@ function applySidecar(text){
 }
 let action = false;
 function drawChat(){
-  const word = VIEW.mainWord() || '_quest', lines = jget(chatKey(word), []);
+  const word = VIEW.mainWord() || '_quest', held = jget(chatKey(word), null);
+  const lines = held || ((VIEW.book.talk && VIEW.book.talk[word]) || []).map(t => ({ who: 'orv', text: t }));
   const list = $('chatlines'); list.textContent = '';
   if(!lines.length) list.appendChild(el('p', 'chatline dim', box().apiKey ? 'Orv is listening.' : PORTAL ? 'Orv is listening.' : 'No key in the box: Orv is mute. Paste one below and he speaks.'));
   lines.forEach(l => { const p = el('p', 'chatline ' + l.who); p.appendChild(el('b', null, l.who === 'orv' ? 'ORV ' : 'KING ')); p.appendChild(document.createTextNode(l.text)); list.appendChild(p); });
@@ -823,7 +927,7 @@ async function say(){
   const inp = $('chatin'), text = inp.value.trim(); if(!text || !VIEW) return;
   if(PORTAL && !box().apiKey){ WANT_KEY = true; drawChat(); $('keyin').focus(); return; }
   inp.value = '';
-  const word = VIEW.mainWord() || '_quest', k = chatKey(word), lines = jget(k, []);
+  const word = VIEW.mainWord() || '_quest', k = chatKey(word), lines = jget(k, null) || ((VIEW.book.talk && VIEW.book.talk[word]) || []).map((t, i) => ({ who: 'orv', text: t, at: '2026-09-27T21:00:0' + i + '.000Z' }));
   lines.push({ who: 'king', text, at: new Date().toISOString() }); jput(k, lines); ledger('say', text, word); drawChat();
   try {
     const r = await ask(SYSTEM + (action ? ACTION : '') + '\n\n' + context(), lines.slice(-12, -1), text);
@@ -1072,7 +1176,17 @@ function portalInit(){
     f++; };
   draw(); if(!matchMedia('(prefers-reduced-motion: reduce)').matches) setInterval(draw, 260);
   $('keysave').addEventListener('click', () => { WANT_KEY = false; });
-  portalState(); setInterval(portalState, 30000); drawChat();
+  portalState(); setInterval(portalState, 30000); drawChat(); portalStories();
+}
+/* the only way between stories: a quiet row at the foot — his own swords, then the Wolf */
+function portalStories(){
+  const row = $('stories'); if(!row) return; row.textContent = '';
+  const own = [];
+  Object.keys(localStorage).forEach(k => { const m = /^monomyth\.sword\.([a-z0-9][a-z0-9-]*)\.v1$/i.exec(k); if(!m || m[1] === 'wolf') return;
+    const b = jget(k, null); if(b && typeof b === 'object' && b.story) own.push([m[1], String(b.title || m[1])]); });
+  own.sort((a, b) => a[0] === 'day-one' ? -1 : b[0] === 'day-one' ? 1 : a[1].localeCompare(b[1]));
+  own.map(([id, t]) => [id, t, OWN_PAGES[id] || './sword.html?p=' + encodeURIComponent(id)]).concat([['wolf', 'Wolf', './wolf.html']]).forEach(([id, t, href]) => {
+    if(id === PAGE) return; const a = el('a', null, t); a.href = href; row.appendChild(a); });
 }
 
 /* THE LINK — the kingdom in the address itself, after the #, which never leaves the phone:

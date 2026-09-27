@@ -147,3 +147,10 @@ body.portal{ position:fixed; inset:0; padding:0; display:flex; flex-direction:co
 .portal #keyrow[hidden]{ display:none }
 .portal #keyrow button{ background:none; border:0; font:inherit; color:var(--ink); padding:10px 0; cursor:pointer }
 .portal #keyin{ border-bottom:1px solid var(--faint) }
+
+/* THE REWRITE: hold a word, drag it */
+.name{ -webkit-touch-callout:none; -webkit-user-select:none; user-select:none }
+.name.dragging{ opacity:.35 }
+.dragghost{ position:fixed; z-index:30; pointer-events:none; transform:translate(-50%,-120%); font-family:'Dogica',monospace; font-size:16px; line-height:1; padding:6px 8px; background:var(--ink); color:var(--paper) }
+.portal #stories a{ color:var(--faint); text-decoration:none; margin-right:14px }
+.portal #stories a:hover{ color:var(--ink) }

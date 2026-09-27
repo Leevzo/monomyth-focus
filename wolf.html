@@ -11,50 +11,39 @@
 <link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">
 <meta name="apple-mobile-web-app-title" content="Monomyth">
 
-<title>Befriending a Wolf</title>
+<title>Befriending a Wolf, Following Ravens</title>
 <link rel="stylesheet" href="./fonts.css">
 <link rel="stylesheet" href="./sword.css">
 </head>
-<body data-page="wolf">
-<div class="sheet">
-  <div class="scan"><label for="scanfile">upload kingdom</label><input type="file" id="scanfile" accept="image/png,image/gif,image/*"><span id="scannote"></span></div>
-  <nav class="shelf" aria-label="the pages">
-    <a href="./">Day One</a>
-    <a href="./wild-beasts.html">Wild Beasts</a>
-    <a href="./empty-square.html">The Empty Square</a>
-    <a href="./wolf.html" aria-current="page">Wolf</a>
-    <a href="./ravens.html">Ravens</a>
-    <a href="./dragons.html">Dragons</a>
-    <a href="./glyph.html">Kingdom</a>
-    <a href="./crown/">Crown</a>
-  </nav>
-  <div class="one"><span class="lab">the one thing</span><span class="word" id="one"></span></div>
-  <div id="flow"></div>
+<body data-page="wolf" class="portal">
+<div id="storypane"><div id="flow"></div></div>
+<div id="barrier" role="separator" aria-orientation="horizontal" aria-label="the one thing: drag to move">
+  <div class="crystals" aria-hidden="true"><div class="drift" id="crystals"></div></div>
+  <div class="one"><span class="word" id="one"></span></div>
+  <div class="numbers" aria-hidden="true"><div class="drift" id="numbers"></div></div>
+</div>
+<div id="chat">
+  <div id="chatlines"></div>
+  <div id="keyrow" hidden><input id="keyin" type="password" autocomplete="off" placeholder="a key looses his mouth"><button type="button" id="keysave">keep</button></div>
+  <div class="chatrow"><input id="chatin" type="text" enterkeyhint="send" autocomplete="off" autocorrect="on" placeholder="say it, then tap Orv"></div>
   <div class="feet">
+    <label for="scanfile">upload kingdom</label><input type="file" id="scanfile" accept="image/png,image/gif,image/*">
     <button type="button" id="glyphbtn">save kingdom</button>
-    <button type="button" id="shutAll">close everything</button>
-    <button type="button" id="backup" hidden>backup .myth</button>
-    <label for="restorefile" hidden>restore .myth</label><input type="file" id="restorefile" accept=".myth,.zip,application/zip">
-    <span class="tally" id="tally"></span>
-    <span id="feetnote"></span>
+    <span id="stories"></span><span id="scannote"></span><span id="feetnote"></span>
   </div>
 </div>
-<button type="button" id="orvbtn" aria-label="Orv"><svg width="35" height="14" viewBox="0 0 21 7" shape-rendering="crispEdges" fill="currentColor"><path d="M0 1h1v5h-1zM4 1h1v5h-1zM1 0h3v1h-3zM1 6h3v1h-3zM7 0h1v7h-1zM8 0h3v1h-3zM11 1h1v2h-1zM8 3h3v1h-3zM10 4h1v1h-1zM11 5h1v2h-1zM14 0h1v5h-1zM19 0h1v5h-1zM15 5h1v1h-1zM18 5h1v1h-1zM16 6h2v1h-2z"/></svg></button>
-<div id="chat" hidden>
-  <div class="chathead"><span class="who">ORV</span><span id="orvword"></span><button type="button" id="chatclose">close</button></div>
-  <div id="chatlines"></div>
-  <div id="keyrow" hidden><span class="hint">a key looses his mouth — the stamp names the door (gsk_ · sk-ant- · AIza · sk-or- · xai- · sk-)</span><input id="keyin" type="password" autocomplete="off" placeholder="paste a key"><button type="button" id="keysave">keep</button></div>
-  <div class="chatrow"><textarea id="chatin" rows="2" placeholder="say it"></textarea><button type="button" id="actbtn" title="Orv may strike and add deeds">act</button><button type="button" id="chatsend">send</button></div>
-</div>
+<button type="button" id="orvbtn" aria-label="Orv"><canvas id="orvsprite" width="41" height="50"></canvas></button>
+<div hidden><span id="orvword"></span><button type="button" id="chatsend"></button><button type="button" id="chatclose"></button><button type="button" id="actbtn"></button><button type="button" id="shutAll"></button><button type="button" id="backup"></button><input type="file" id="restorefile"><span id="tally"></span></div>
 <div id="mark" hidden>
-  <div class="chathead"><span class="who">GLYPH</span><span id="markhead"></span><button type="button" id="markclose">close</button></div>
+  <div class="chathead"><span class="who">KINGDOM</span><span id="markhead"></span><button type="button" id="markclose">close</button></div>
   <div id="markbody"></div>
-  <p class="markhow">The kingdom rides in Orv, one picture. Save him to Photos or take a screenshot; scan Orv reads him back.</p>
-  <div class="chatrow"><button type="button" id="glyphsave">save the glyph</button></div>
+  <p class="markhow">The kingdom rides in Orv, one picture. Save him to Photos or take a screenshot; upload kingdom reads him back.</p>
+  <div class="chatrow"><button type="button" id="glyphsave">save the kingdom</button></div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.1.0/pako.min.js"></script>
 <script src="./vendor/omggif.js"></script>
+
 <script src="./quests/wolf.js"></script>
 <script src="./sword.js"></script>
 </body>
