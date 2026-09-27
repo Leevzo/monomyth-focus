@@ -25,7 +25,7 @@
 <div id="chat">
   <div id="chatlines"></div>
   <div id="keyrow" hidden><input id="keyin" type="password" autocomplete="off" placeholder="a key looses his mouth"><button type="button" id="keysave">keep</button></div>
-  <div class="chatrow"><textarea id="chatin" rows="1" placeholder="say it to Orv"></textarea><button type="button" id="chatsend">send</button></div>
+  <div class="chatrow"><input id="chatin" type="text" enterkeyhint="send" autocomplete="off" autocorrect="on" placeholder="say it, then tap Orv"></div>
   <div class="feet">
     <label for="scanfile">upload kingdom</label><input type="file" id="scanfile" accept="image/png,image/gif,image/*">
     <button type="button" id="glyphbtn">save kingdom</button>
@@ -33,7 +33,7 @@
   </div>
 </div>
 <button type="button" id="orvbtn" aria-label="Orv"><canvas id="orvsprite" width="41" height="50"></canvas></button>
-<div hidden><span id="orvword"></span><button type="button" id="chatclose"></button><button type="button" id="actbtn"></button><button type="button" id="shutAll"></button><button type="button" id="backup"></button><input type="file" id="restorefile"><span id="tally"></span></div>
+<div hidden><span id="orvword"></span><button type="button" id="chatsend"></button><button type="button" id="chatclose"></button><button type="button" id="actbtn"></button><button type="button" id="shutAll"></button><button type="button" id="backup"></button><input type="file" id="restorefile"><span id="tally"></span></div>
 <div id="mark" hidden>
   <div class="chathead"><span class="who">KINGDOM</span><span id="markhead"></span><button type="button" id="markclose">close</button></div>
   <div id="markbody"></div>

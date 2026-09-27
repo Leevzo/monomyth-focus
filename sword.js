@@ -1025,7 +1025,7 @@ async function restore(file){
 /* ═══ wiring ═══ */
 async function main(){
   mountBook(await loadBook());
-  $('orvbtn').addEventListener('click', () => { if(!VIEW) return; $('chat').hidden = false; drawChat(); $('chatin').focus(); });
+  $('orvbtn').addEventListener('click', () => { if(!VIEW) return; if(PORTAL){ if($('chatin').value.trim()) say(); else $('chatin').focus(); return; } $('chat').hidden = false; drawChat(); $('chatin').focus(); });
   $('chatclose').addEventListener('click', () => { $('chat').hidden = true; });
   $('chatsend').addEventListener('click', say);
   $('chatin').addEventListener('keydown', e => { if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); say(); } });
