@@ -716,6 +716,7 @@ const STORE = 'monomyth.sword.' + PAGE;
 const SOURCE_KEY = STORE + '.v1';                       // the story as it arrived in the .myth
 const LEDGER_KEY = 'monomyth.sword.ledger.v1';           // append-only; never trimmed
 const HISTORY_KEY = 'monomyth.glyph.history.v1';         // the glyphs read on this phone; never rides inside a glyph
+const LINK_KEY = 'monomyth.link.applied.v1';             // the kingdom a #kingdom= link last wrote; never rides
 const BYOK_KEY = 'monomyth.focus.byok.v1';               // the same key box as the Crown's Gate
 const chatKey = word => STORE + '.chat.' + word + '.v1';
 let VIEW = null;
@@ -736,7 +737,7 @@ function mountBook(book){
   const flow = $('flow'); flow.textContent = '';
   if(!book){
     $('one').textContent = document.body.dataset.page === 'sword' ? 'no sword named ' + PAGE + ' on this phone' : 'restore the kingdom';
-    flow.appendChild(el('p', 'run d1', 'This page ships empty and gives up nothing. Your story rides in Orv: SCAN ORV above and pick the saved glyph, or RESTORE the .myth below.'));
+    flow.appendChild(el('p', 'run d1', 'This page ships empty and gives up nothing. Your story rides in Orv: tap UPLOAD KINGDOM above and choose the picture of Orvs.'));
     $('tally').textContent = ''; VIEW = null; return;
   }
   if(document.body.dataset.page === 'sword' && book.title) document.title = book.title;
@@ -888,8 +889,12 @@ function mergeRecord(cur, inc){
 }
 function applyKingdom(k){
   let n = 0;
-  Object.keys(k.keys || {}).forEach(key => {
+  const inc = k.keys || {};
+  Object.keys(inc).forEach(key => {
     if(!key.startsWith('monomyth.') || NEVER.has(key) || key === HISTORY_KEY) return;
+    /* a new story replaces the phone's working copy of it, unless the kingdom carries that copy too */
+    const m = /^(monomyth\.sword\.[a-z0-9][a-z0-9-]*)\.v1$/i.exec(key);
+    if(m && localStorage.getItem(key) !== String(inc[key]) && !(m[1] + '.book.v1' in inc)) localStorage.removeItem(m[1] + '.book.v1');
     localStorage.setItem(key, mergeRecord(localStorage.getItem(key), String(k.keys[key]))); n++;
   });
   return n;
@@ -990,7 +995,7 @@ function glyphPage(){
 }
 
 /* ═══ THE .MYTH — the whole kingdom in one file (the Crown's own shape) ═══ */
-const NEVER = new Set(['monomyth.focus.byok.v1', 'monomyth.byok.v1', 'monomyth.kingdom.pass', 'monomyth.focus.seeded.v1', 'monomyth.focus.gate.v1', 'monomyth.vault.v1', 'monomyth.focus.screen', 'monomyth.courier.v1', 'monomyth.focus.snapshot.v1']);
+const NEVER = new Set(['monomyth.focus.byok.v1', 'monomyth.byok.v1', 'monomyth.kingdom.pass', 'monomyth.focus.seeded.v1', 'monomyth.focus.gate.v1', 'monomyth.vault.v1', 'monomyth.focus.screen', 'monomyth.courier.v1', 'monomyth.focus.snapshot.v1', 'monomyth.link.applied.v1']);
 const stampNow = () => { const d = new Date(), p = n => String(n).padStart(2, '0'); return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}-${p(d.getHours())}${p(d.getMinutes())}`; };
 async function backup(){
   if(!window.JSZip) throw new Error('the zip library did not load');
@@ -1030,5 +1035,17 @@ async function main(){
   $('restorefile').addEventListener('change', async e => { const f = e.target.files[0]; if(!f) return; try { const n = await restore(f); $('feetnote').textContent = n + ' keys restored'; mountBook(await loadBook()); buildShelf(); } catch(err){ $('feetnote').textContent = String(err.message || err); } });
   $('shutAll').addEventListener('click', () => { if(VIEW) VIEW.shut(); });
 }
+/* THE LINK — the kingdom in the address itself, after the #, which never leaves the phone:
+   …/monomyth-focus/#kingdom=<base64url of the glyph's zlib>. Applied once per kingdom (by its 'at'),
+   so a strike made later is never undone. While it stands, the page drops its manifest so
+   Add to Home Screen keeps this whole address: the new app wakes with the kingdom in it. */
+function linkKingdom(){
+  const m = /^#kingdom=([A-Za-z0-9_-]+)$/.exec(location.hash); if(!m || !window.pako) return;
+  const b = m[1].replace(/-/g, '+').replace(/_/g, '/'), k = GLYPH.openDeflated(unb64(b + '='.repeat((4 - b.length % 4) % 4)));
+  document.querySelectorAll('link[rel="manifest"]').forEach(l => l.remove());
+  if(!k || localStorage.getItem(LINK_KEY) === k.at) return;
+  applyKingdom(k); localStorage.setItem(LINK_KEY, k.at);
+}
+try { linkKingdom(); } catch {}
 buildShelf(); scanLine();
 if(PAGE === 'glyph') glyphPage(); else main();
