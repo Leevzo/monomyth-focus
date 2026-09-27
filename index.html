@@ -8,14 +8,16 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="apple-touch-icon" href="./icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="./icon-180.png">
+<meta name="apple-mobile-web-app-title" content="Monomyth">
+
 <title>MONOMYTH</title>
 <link rel="stylesheet" href="./fonts.css">
 <link rel="stylesheet" href="./sword.css">
 </head>
 <body data-page="day-one">
 <div class="sheet">
-  <div class="scan"><label for="scanfile">scan Orv</label><input type="file" id="scanfile" accept="image/*,image/gif"><label for="scancam">camera</label><input type="file" id="scancam" accept="image/*" capture="environment"><span id="scannote"></span></div>
+  <div class="scan"><label for="scanfile">upload kingdom</label><input type="file" id="scanfile" accept="image/png,image/gif,image/*"><span id="scannote"></span></div>
   <nav class="shelf" aria-label="the pages">
     <a href="./" aria-current="page">Day One</a>
     <a href="./wild-beasts.html">Wild Beasts</a>
@@ -23,16 +25,16 @@
     <a href="./wolf.html">Wolf</a>
     <a href="./ravens.html">Ravens</a>
     <a href="./dragons.html">Dragons</a>
-    <a href="./glyph.html">Glyph</a>
+    <a href="./glyph.html">Kingdom</a>
     <a href="./crown/">Crown</a>
   </nav>
   <div class="one"><span class="lab">the one thing</span><span class="word" id="one"></span></div>
   <div id="flow"></div>
   <div class="feet">
-    <button type="button" id="glyphbtn">glyph</button>
+    <button type="button" id="glyphbtn">save kingdom</button>
     <button type="button" id="shutAll">close everything</button>
-    <button type="button" id="backup">backup .myth</button>
-    <label for="restorefile">restore .myth</label><input type="file" id="restorefile" accept=".myth,.zip,application/zip">
+    <button type="button" id="backup" hidden>backup .myth</button>
+    <label for="restorefile" hidden>restore .myth</label><input type="file" id="restorefile" accept=".myth,.zip,application/zip">
     <span class="tally" id="tally"></span>
     <span id="feetnote"></span>
   </div>

@@ -951,10 +951,10 @@ async function readGlyph(file, camera){
 function scanLine(){
   if(!$('scanfile')) return;
   const note = $('scannote');
-  const pick = (id, camera) => $(id).addEventListener('change', async e => {
+  const pick = (id, camera) => $(id) && $(id).addEventListener('change', async e => {
     const f = e.target.files[0]; e.target.value = ''; if(!f) return;
     if(!window.pako || !window.GifReader){ note.textContent = 'the glyph libraries did not load'; return; }
-    note.textContent = 'reading Orv …';
+    note.textContent = 'reading the kingdom …';
     const t = await takeGlyph(f, camera);
     if(!t.ok){ note.textContent = t.note; return; }
     note.textContent = 'the kingdom is now ' + localAt(t.kingdom.at) + ' · ' + Object.keys(t.kingdom.keys || {}).length + ' keys';
@@ -966,7 +966,7 @@ function scanLine(){
 /* the shelf, built from what this phone holds: every sword in localStorage, then the public quests,
    the Glyph and the Crown. With nothing in localStorage the static links in the page stand. */
 const OWN_PAGES = { 'day-one': './', 'wild-beasts': './wild-beasts.html', 'empty-square': './empty-square.html' };
-const PUBLIC = [['wolf', 'Wolf', './wolf.html'], ['ravens', 'Ravens', './ravens.html'], ['dragons', 'Dragons', './dragons.html'], ['glyph', 'Glyph', './glyph.html'], ['crown', 'Crown', './crown/']];
+const PUBLIC = [['wolf', 'Wolf', './wolf.html'], ['ravens', 'Ravens', './ravens.html'], ['dragons', 'Dragons', './dragons.html'], ['glyph', 'Kingdom', './glyph.html'], ['crown', 'Crown', './crown/']];
 function buildShelf(){
   const nav = document.querySelector('.shelf'); if(!nav) return;
   const own = [];
@@ -984,7 +984,7 @@ function buildShelf(){
 }
 function glyphPage(){
   if(!window.pako || !window.GifReader){ $('glyphnote').textContent = 'the glyph libraries did not load'; return; }
-  const pick = (id, camera) => $(id).addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; if(f) readGlyph(f, camera); });
+  const pick = (id, camera) => $(id) && $(id).addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; if(f) readGlyph(f, camera); });
   pick('glyphphotos', false); pick('glyphcamera', true);
   drawTabs(-1);
 }
